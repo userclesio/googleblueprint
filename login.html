@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — Google Income Blueprint Members Area</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #07111F;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: 100vh; padding: 24px;
+      position: relative; overflow: hidden;
+    }
+    body::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(22,163,74,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(245,158,11,0.07) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    body::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.015'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .login-wrap {
+      position: relative; z-index: 1;
+      width: 100%; max-width: 420px;
+    }
+
+    .login-logo {
+      text-align: center; margin-bottom: 32px;
+    }
+    .login-logo__text {
+      font-size: 1.4rem; font-weight: 900; color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .login-logo__text em { color: #F59E0B; font-style: normal; }
+    .login-logo__sub {
+      display: block; font-size: 0.8rem; color: rgba(255,255,255,0.4);
+      margin-top: 6px; letter-spacing: 0.05em; text-transform: uppercase;
+    }
+
+    .login-card {
+      background: rgba(17,29,46,0.95);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 36px 32px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+      backdrop-filter: blur(12px);
+    }
+
+    .login-card h1 {
+      font-size: 1.35rem; font-weight: 800; color: #fff;
+      margin-bottom: 6px; text-align: center;
+    }
+    .login-card p {
+      font-size: 0.875rem; color: rgba(255,255,255,0.5);
+      text-align: center; margin-bottom: 28px;
+    }
+
+    .form-field { margin-bottom: 18px; }
+    .form-field label {
+      display: block; font-size: 0.8rem; font-weight: 600;
+      color: rgba(255,255,255,0.7); margin-bottom: 8px;
+      letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    .form-field input {
+      width: 100%; padding: 13px 16px;
+      background: rgba(255,255,255,0.06);
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: 8px; color: #fff;
+      font-size: 0.95rem; font-family: 'Inter', sans-serif;
+      transition: border-color 0.2s, background 0.2s;
+      outline: none;
+    }
+    .form-field input:focus {
+      border-color: #16A34A;
+      background: rgba(22,163,74,0.06);
+    }
+    .form-field input::placeholder { color: rgba(255,255,255,0.25); }
+
+    .login-error {
+      display: none;
+      background: rgba(239,68,68,0.12);
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 8px; padding: 12px 16px;
+      font-size: 0.875rem; color: #FCA5A5;
+      margin-bottom: 18px; text-align: center;
+    }
+
+    .login-btn {
+      width: 100%; padding: 15px;
+      background: #16A34A; color: #fff;
+      border: none; border-radius: 8px;
+      font-size: 1rem; font-weight: 700;
+      cursor: pointer; font-family: 'Inter', sans-serif;
+      transition: all 0.2s; margin-top: 6px;
+      box-shadow: 0 4px 20px rgba(22,163,74,0.3);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .login-btn:hover:not(:disabled) {
+      background: #15803D;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 28px rgba(22,163,74,0.4);
+    }
+    .login-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+    .login-footer {
+      margin-top: 24px; text-align: center;
+      font-size: 0.78rem; color: rgba(255,255,255,0.3);
+      line-height: 1.7;
+    }
+    .login-footer a { color: rgba(255,255,255,0.4); text-decoration: underline; }
+
+    .badge-row {
+      display: flex; justify-content: center; gap: 16px;
+      margin-top: 28px; flex-wrap: wrap;
+    }
+    .badge-item {
+      display: flex; align-items: center; gap: 6px;
+      color: rgba(255,255,255,0.35); font-size: 0.75rem;
+    }
+    .badge-item span { font-size: 0.85rem; }
+
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<div class="login-wrap">
+  <div class="login-logo">
+    <div class="login-logo__text">Google <em>Income</em> Blueprint</div>
+    <span class="login-logo__sub">Members Area — Exclusive Access</span>
+  </div>
+
+  <div class="login-card">
+    <h1>Welcome Back</h1>
+    <p>Enter your details below to access your training</p>
+
+    <div class="login-error" id="loginError"></div>
+
+    <form id="loginForm" novalidate>
+      <div class="form-field">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="your@email.com" autocomplete="email" />
+      </div>
+      <div class="form-field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Your password" autocomplete="current-password" />
+      </div>
+      <button type="submit" class="login-btn" id="loginBtn">
+        <div class="spinner" id="spinner"></div>
+        <span id="btnText">Access My Training →</span>
+      </button>
+    </form>
+  </div>
+
+  <div class="badge-row">
+    <div class="badge-item"><span>🔒</span> Secure Access</div>
+    <div class="badge-item"><span>🎓</span> Full Course Included</div>
+    <div class="badge-item"><span>🤖</span> AI Assistant Inside</div>
+  </div>
+
+  <div class="login-footer">
+    Issues accessing your account?<br />
+    Contact: <a href="mailto:ferramentasvsl@gmail.com">ferramentasvsl@gmail.com</a>
+  </div>
+</div>
+
+<script>
+  if (sessionStorage.getItem('gib_logged_in') === 'true') {
+    window.location.href = 'members.html';
+  }
+
+  const form = document.getElementById('loginForm');
+  const errorEl = document.getElementById('loginError');
+  const btn = document.getElementById('loginBtn');
+  const spinner = document.getElementById('spinner');
+  const btnText = document.getElementById('btnText');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    errorEl.style.display = 'none';
+
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    if (!email) { showError('Please enter your email address.'); return; }
+    if (!email.includes('@')) { showError('Please enter a valid email address.'); return; }
+    if (!password) { showError('Please enter your password.'); return; }
+
+    btn.disabled = true;
+    spinner.style.display = 'block';
+    btnText.textContent = 'Verifying access...';
+
+    setTimeout(function () {
+      sessionStorage.setItem('gib_logged_in', 'true');
+      sessionStorage.setItem('gib_user_email', email);
+      btnText.textContent = 'Access granted! Loading...';
+      setTimeout(function () {
+        window.location.href = 'members.html';
+      }, 400);
+    }, 1100);
+  });
+
+  function showError(msg) {
+    errorEl.textContent = msg;
+    errorEl.style.display = 'block';
+    errorEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  document.getElementById('email').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') document.getElementById('password').focus();
+  });
+</script>
+
+</body>
+</html>

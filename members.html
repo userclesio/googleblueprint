@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Members Area — Google Income Blueprint</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; }
+    body { font-family: 'Inter', sans-serif; background: #0B1120; color: #F9FAFB; }
+
+    :root {
+      --header-h: 60px;
+      --sidebar-w: 268px;
+      --bg: #0B1120;
+      --sidebar-bg: #0F1A2E;
+      --header-bg: #070E1C;
+      --card-bg: #1A2840;
+      --border: rgba(255,255,255,0.08);
+      --green: #16A34A;
+      --green-glow: rgba(22,163,74,0.25);
+      --gold: #F59E0B;
+      --text-1: #F9FAFB;
+      --text-2: #9CA3AF;
+      --text-3: #6B7280;
+    }
+
+    /* === LAYOUT === */
+    .app { display: flex; flex-direction: column; height: 100vh; }
+
+    /* HEADER */
+    .app-header {
+      height: var(--header-h); flex-shrink: 0;
+      background: var(--header-bg);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; gap: 16px; z-index: 50;
+    }
+    .header-left { display: flex; align-items: center; gap: 14px; }
+    .sidebar-toggle {
+      background: none; border: none; cursor: pointer; padding: 6px;
+      color: var(--text-2); display: flex; align-items: center; justify-content: center;
+      border-radius: 6px; transition: background 0.2s, color 0.2s;
+    }
+    .sidebar-toggle:hover { background: rgba(255,255,255,0.07); color: var(--text-1); }
+    .header-logo { font-size: 1rem; font-weight: 800; color: #fff; white-space: nowrap; }
+    .header-logo em { color: var(--gold); font-style: normal; }
+
+    .header-progress { display: flex; align-items: center; gap: 10px; flex: 1; max-width: 300px; margin: 0 auto; }
+    .progress-bar-track { flex: 1; height: 5px; background: rgba(255,255,255,0.08); border-radius: 100px; overflow: hidden; }
+    .progress-bar-fill { height: 100%; background: var(--green); border-radius: 100px; transition: width 0.5s ease; }
+    .progress-label { font-size: 0.75rem; color: var(--text-3); white-space: nowrap; }
+
+    .header-right { display: flex; align-items: center; gap: 14px; }
+    .user-email-badge {
+      font-size: 0.78rem; color: var(--text-2);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); border-radius: 100px;
+      padding: 5px 12px; max-width: 160px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .logout-btn {
+      background: none; border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text-2); padding: 6px 14px;
+      border-radius: 6px; font-size: 0.8rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s; font-family: inherit;
+    }
+    .logout-btn:hover { border-color: rgba(255,255,255,0.3); color: var(--text-1); }
+
+    /* BODY BELOW HEADER */
+    .app-body { flex: 1; display: flex; overflow: hidden; position: relative; }
+
+    /* SIDEBAR */
+    .app-sidebar {
+      width: var(--sidebar-w); flex-shrink: 0;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      overflow-y: auto; overflow-x: hidden;
+      display: flex; flex-direction: column;
+      transition: transform 0.3s ease;
+    }
+    .app-sidebar::-webkit-scrollbar { width: 4px; }
+    .app-sidebar::-webkit-scrollbar-track { background: transparent; }
+    .app-sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+    .sidebar-head {
+      padding: 18px 16px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-head__title { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); }
+
+    .module-group { padding: 14px 0; }
+    .module-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-3); padding: 0 16px 8px;
+    }
+
+    .lesson-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px 16px; cursor: pointer;
+      transition: background 0.15s; border-left: 3px solid transparent;
+      position: relative;
+    }
+    .lesson-item:hover { background: rgba(255,255,255,0.04); }
+    .lesson-item.active {
+      background: rgba(22,163,74,0.1);
+      border-left-color: var(--green);
+    }
+    .lesson-item__num {
+      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700; margin-top: 1px;
+      background: rgba(255,255,255,0.06); color: var(--text-2);
+      border: 1.5px solid var(--border);
+    }
+    .lesson-item.active .lesson-item__num { background: var(--green); color: #fff; border-color: var(--green); }
+    .lesson-item.completed .lesson-item__num { background: rgba(22,163,74,0.15); color: #4ADE80; border-color: rgba(22,163,74,0.3); }
+    .lesson-item__info { flex: 1; min-width: 0; }
+    .lesson-item__tag {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-3); margin-bottom: 3px;
+    }
+    .lesson-item.active .lesson-item__tag { color: #4ADE80; }
+    .lesson-item__title { font-size: 0.82rem; font-weight: 600; color: var(--text-2); line-height: 1.35; }
+    .lesson-item.active .lesson-item__title, .lesson-item:hover .lesson-item__title { color: var(--text-1); }
+    .lesson-item__dur { font-size: 0.7rem; color: var(--text-3); margin-top: 3px; }
+    .check-icon { font-size: 0.75rem; margin-top: 6px; flex-shrink: 0; display: none; }
+    .lesson-item.completed .check-icon { display: block; color: #4ADE80; }
+
+    /* MAIN */
+    .app-main { flex: 1; overflow-y: auto; overflow-x: hidden; }
+    .app-main::-webkit-scrollbar { width: 6px; }
+    .app-main::-webkit-scrollbar-track { background: transparent; }
+    .app-main::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
+
+    .main-inner { max-width: 920px; margin: 0 auto; padding: 32px 28px 80px; }
+
+    /* VIDEO */
+    .video-frame {
+      background: #000; border-radius: 12px; overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      border: 2px solid rgba(255,255,255,0.07);
+      margin-bottom: 28px;
+    }
+    #videoContainer { width: 100%; }
+
+    /* LESSON INFO */
+    .lesson-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+    .lesson-tag-badge {
+      background: rgba(22,163,74,0.15); color: #4ADE80;
+      border: 1px solid rgba(22,163,74,0.25);
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 4px 10px; border-radius: 100px;
+    }
+    .lesson-dur-badge {
+      background: rgba(255,255,255,0.06); color: var(--text-3);
+      font-size: 0.7rem; font-weight: 600; padding: 4px 10px; border-radius: 100px;
+    }
+    #lessonTitle { font-size: 1.6rem; font-weight: 800; color: var(--text-1); margin-bottom: 6px; line-height: 1.2; }
+    #lessonSubtitle { font-size: 0.95rem; color: var(--gold); font-weight: 500; margin-bottom: 16px; }
+    #lessonDesc { font-size: 0.92rem; color: var(--text-2); line-height: 1.8; margin-bottom: 28px; }
+
+    .lesson-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 32px; }
+    .btn-complete {
+      display: flex; align-items: center; gap: 8px;
+      padding: 11px 22px; border-radius: 8px; font-size: 0.875rem; font-weight: 700;
+      cursor: pointer; border: 1.5px solid rgba(22,163,74,0.4); color: #4ADE80;
+      background: rgba(22,163,74,0.08); font-family: inherit; transition: all 0.2s;
+    }
+    .btn-complete:hover { background: rgba(22,163,74,0.15); border-color: rgba(22,163,74,0.6); }
+    .btn-complete.done { background: var(--green); border-color: var(--green); color: #fff; }
+    .btn-next {
+      display: flex; align-items: center; gap: 8px;
+      padding: 11px 22px; border-radius: 8px; font-size: 0.875rem; font-weight: 700;
+      cursor: pointer; border: none; color: #fff; background: var(--card-bg);
+      font-family: inherit; transition: all 0.2s;
+    }
+    .btn-next:hover { background: #213350; }
+    .btn-next:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* DIVIDER */
+    .section-divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+    /* TIPS BOX */
+    .tips-box {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 12px; padding: 24px;
+    }
+    .tips-box h3 { font-size: 0.85rem; font-weight: 700; color: var(--text-1); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .tips-list { display: flex; flex-direction: column; gap: 10px; }
+    .tip-item { display: flex; gap: 10px; align-items: flex-start; font-size: 0.85rem; color: var(--text-2); line-height: 1.5; }
+    .tip-item .tip-icon { flex-shrink: 0; font-size: 1rem; margin-top: 1px; }
+
+    /* OVERLAY (mobile sidebar) */
+    .sidebar-overlay {
+      display: none; position: fixed; inset: 0; top: var(--header-h);
+      background: rgba(0,0,0,0.6); z-index: 40;
+    }
+    .sidebar-overlay.show { display: block; }
+
+    /* ======================== CHAT ======================== */
+    .chat-toggle {
+      position: fixed; bottom: 28px; right: 28px; z-index: 200;
+      background: var(--green); color: #fff;
+      border: none; border-radius: 100px; cursor: pointer;
+      display: flex; align-items: center; gap: 10px;
+      padding: 13px 22px; font-size: 0.9rem; font-weight: 700;
+      font-family: inherit; box-shadow: 0 8px 32px var(--green-glow);
+      transition: all 0.25s;
+    }
+    .chat-toggle:hover { transform: translateY(-2px); box-shadow: 0 12px 40px var(--green-glow); background: #15803D; }
+    .chat-toggle.open { background: #374151; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+    .chat-badge {
+      background: var(--gold); color: #000;
+      width: 8px; height: 8px; border-radius: 50%;
+      position: absolute; top: 8px; right: 8px;
+      display: none;
+    }
+    .chat-badge.pulse { display: block; animation: pulse-dot 1.5s ease infinite; }
+    @keyframes pulse-dot { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.4);opacity:0.7} }
+
+    .chat-panel {
+      position: fixed; bottom: 96px; right: 28px; z-index: 199;
+      width: 380px; height: 540px;
+      background: #111D2E;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+      display: flex; flex-direction: column;
+      transform: scale(0.9) translateY(20px);
+      transform-origin: bottom right;
+      opacity: 0; pointer-events: none;
+      transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .chat-panel.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
+
+    .chat-header {
+      padding: 14px 18px;
+      background: #0A1628;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px 16px 0 0;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .chat-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--green); display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.8rem; color: #fff; flex-shrink: 0;
+    }
+    .chat-header-info h4 { font-size: 0.88rem; font-weight: 700; color: var(--text-1); }
+    .chat-header-info p { font-size: 0.72rem; color: #4ADE80; }
+    .chat-close {
+      margin-left: auto; background: none; border: none; color: var(--text-3);
+      font-size: 1.3rem; cursor: pointer; padding: 2px 6px; border-radius: 4px;
+      transition: color 0.2s; line-height: 1;
+    }
+    .chat-close:hover { color: var(--text-1); }
+
+    .chat-messages {
+      flex: 1; overflow-y: auto; padding: 16px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .chat-messages::-webkit-scrollbar { width: 3px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+    .msg { display: flex; gap: 10px; align-items: flex-end; }
+    .msg.user { flex-direction: row-reverse; }
+
+    .msg-avatar {
+      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 800; color: #fff;
+    }
+    .msg.bot .msg-avatar { background: var(--green); }
+    .msg.user .msg-avatar { background: #374151; }
+
+    .msg-bubble {
+      max-width: 280px; padding: 10px 14px;
+      border-radius: 14px; font-size: 0.84rem; line-height: 1.6;
+    }
+    .msg.bot .msg-bubble {
+      background: #1A2840; color: var(--text-2);
+      border-bottom-left-radius: 4px;
+    }
+    .msg.user .msg-bubble {
+      background: var(--green); color: #fff;
+      border-bottom-right-radius: 4px; font-weight: 500;
+    }
+    .msg-bubble strong { color: var(--text-1); }
+    .msg.user .msg-bubble strong { color: #fff; }
+    .msg-time { font-size: 0.65rem; color: var(--text-3); text-align: center; margin: 4px 0 0; }
+
+    .typing-row { display: flex; gap: 10px; align-items: flex-end; }
+    .typing-bubble {
+      background: #1A2840; border-radius: 14px; border-bottom-left-radius: 4px;
+      padding: 12px 16px; display: flex; gap: 5px; align-items: center;
+    }
+    .typing-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--text-3);
+      animation: bounce-dot 1.2s ease infinite;
+    }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce-dot { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+
+    .chat-suggestions { padding: 0 16px 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .suggestion-chip {
+      background: rgba(22,163,74,0.1); border: 1px solid rgba(22,163,74,0.25);
+      color: #4ADE80; font-size: 0.72rem; font-weight: 600;
+      padding: 5px 12px; border-radius: 100px; cursor: pointer;
+      transition: background 0.2s; font-family: inherit; white-space: nowrap;
+    }
+    .suggestion-chip:hover { background: rgba(22,163,74,0.2); }
+
+    .chat-input-row {
+      padding: 12px 14px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex; gap: 8px;
+    }
+    .chat-input {
+      flex: 1; background: rgba(255,255,255,0.06);
+      border: 1.5px solid rgba(255,255,255,0.1); border-radius: 8px;
+      padding: 10px 14px; color: var(--text-1); font-size: 0.875rem;
+      font-family: inherit; outline: none; transition: border-color 0.2s;
+    }
+    .chat-input:focus { border-color: var(--green); }
+    .chat-input::placeholder { color: var(--text-3); }
+    .chat-send {
+      background: var(--green); color: #fff; border: none;
+      border-radius: 8px; padding: 10px 16px; font-weight: 700;
+      cursor: pointer; font-family: inherit; font-size: 0.875rem;
+      transition: background 0.2s; white-space: nowrap;
+    }
+    .chat-send:hover { background: #15803D; }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      .app-sidebar {
+        position: fixed; top: var(--header-h); left: 0; bottom: 0;
+        z-index: 50; transform: translateX(-100%);
+      }
+      .app-sidebar.open { transform: translateX(0); }
+      .header-progress { display: none; }
+      .user-email-badge { display: none; }
+      .main-inner { padding: 20px 16px 100px; }
+      #lessonTitle { font-size: 1.3rem; }
+      .chat-panel { width: calc(100vw - 32px); right: 16px; }
+      .chat-toggle { right: 16px; bottom: 16px; padding: 12px 18px; font-size: 0.85rem; }
+    }
+    @media (max-width: 480px) {
+      .header-logo { font-size: 0.9rem; }
+      .chat-panel { bottom: 80px; height: 480px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- AUTH GATE -->
+<script>
+  (function () {
+    if (sessionStorage.getItem('gib_logged_in') !== 'true') {
+      window.location.href = 'login.html';
+    }
+  })();
+</script>
+
+<div class="app">
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="header-left">
+      <button class="sidebar-toggle" id="sidebarToggle" title="Toggle sidebar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <div class="header-logo">Google <em>Income</em> Blueprint</div>
+    </div>
+    <div class="header-progress">
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="progressFill" style="width:0%"></div></div>
+      <span class="progress-label" id="progressLabel">0 / 7</span>
+    </div>
+    <div class="header-right">
+      <div class="user-email-badge" id="userEmailBadge"></div>
+      <button class="logout-btn" onclick="doLogout()">Logout</button>
+    </div>
+  </header>
+
+  <div class="app-body">
+
+    <!-- SIDEBAR OVERLAY (mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="app-sidebar" id="appSidebar">
+      <div class="sidebar-head">
+        <div class="sidebar-head__title">Course Content — 7 Lessons</div>
+      </div>
+
+      <div class="module-group">
+        <div class="module-label">Main Training</div>
+        <div class="lesson-item active" data-lesson="1" onclick="loadLesson(1)">
+          <div class="lesson-item__num">1</div>
+          <div class="lesson-item__info">
+            <div class="lesson-item__tag">Main Lesson</div>
+            <div class="lesson-item__title">Google Income Blueprint — Full Training</div>
+            <div class="lesson-item__dur">Start here</div>
+          </div>
+          <div class="check-icon">✔</div>
+        </div>
+      </div>
+
+      <div class="module-group" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
+        <div class="module-label">Complementary Lessons</div>
+
+        <div class="lesson-item" data-lesson="2" onclick="loadLesson(2)">
+          <div class="lesson-item__num">2</div>
+          <div class="lesson-item__info">
+            <div class="lesson-item__tag">AdSense</div>
+            <div class="lesson-item__title">How to Make Money with Google AdSense</div>
+            <div class="lesson-item__dur">~15 min</div>
+          </div>
+          <div class="check-icon">✔</div>
+        </div>
+
+        <div class="lesson-item" data-lesson="3" onclick="loadLesson(3)">
+          <div class="lesson-item__num">3</div>
+          <div class="lesson-item__info">
+            <div class="lesson-item__tag">YouTube</div>
+            <div class="lesson-item__title">YouTube Monetisation — Beginner's Guide</div>
+            <div class="lesson-item__dur">~20 min</div>
+          </div>
+          <div class="check-icon">✔</div>
+        </div>
+
+        <div class="lesson-item" data-lesson="4" onclick="loadLesson(4)">
+          <div class="lesson-item__num">4</div>
+          <div class="lesson-item__info">
+            <div class="lesson-item__tag">Google Play</div>
+            <div class="lesson-item__title">Earning from the Google Play Store</div>
+            <div class="lesson-item__dur">~12 min</div>
+          </div>
+          <div class="check-icon">✔</div>
+        </div>
+
+        <div class="lesson-item" data-lesson="5" onclick="loadLesson(5)">
+          <div class="lesson-item__num">5</div>
+          <div class="lesson-item__info">
+            <div class="lesson-item__tag">Freelancing</div>
+            <div class="lesson-item__title">Freelancing with Google Workspace Tools</div>
+            <div class="lesson-item__dur">~18 min</div>
+          </div>
+          <div class="check-icon">✔</div>
+        </div>
+
+        <div class="lesson-item" data-lesson="6" onclick="loadLesson(6)">
+          <div class="lesson-item__num">6</div>
+          <div class="lesson-item__info">
+            <div class="lesson-item__tag">Blogger</div>
+            <div class="lesson-item__title">Google Blogger — Build a Blog That Earns</div>
+            <div class="lesson-item__dur">~16 min</div>
+          </div>
+          <div class="check-icon">✔</div>
+        </div>
+
+        <div class="lesson-item" data-lesson="7" onclick="loadLesson(7)">
+          <div class="lesson-item__num">7</div>
+          <div class="lesson-item__info">
+            <div class="lesson-item__tag">South Africa</div>
+            <div class="lesson-item__title">Making Money Online in South Africa</div>
+            <div class="lesson-item__dur">~22 min</div>
+          </div>
+          <div class="check-icon">✔</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="app-main">
+      <div class="main-inner">
+
+        <!-- VIDEO AREA -->
+        <div class="video-frame">
+          <div id="videoContainer"></div>
+        </div>
+
+        <!-- LESSON INFO -->
+        <div class="lesson-meta">
+          <span class="lesson-tag-badge" id="lessonTagBadge">Main Lesson</span>
+          <span class="lesson-dur-badge" id="lessonDurBadge">Full Training</span>
+        </div>
+        <h1 id="lessonTitle">Google Income Blueprint — Full Training</h1>
+        <p id="lessonSubtitle" style="font-size:0.95rem;color:#F59E0B;font-weight:500;margin-bottom:16px;">Start here — your complete guide from beginning to end</p>
+        <p id="lessonDesc">This is the core training session of the Google Income Blueprint. Watch from beginning to end to understand the full picture of how Google's free platforms can become real income streams. By the end, you'll know every available option and have the confidence to choose your starting path.</p>
+
+        <div class="lesson-actions">
+          <button class="btn-complete" id="btnComplete" onclick="markComplete()">
+            <span id="completeIcon">○</span> <span id="completeText">Mark as Complete</span>
+          </button>
+          <button class="btn-next" id="btnNext" onclick="goNext()">
+            Next Lesson →
+          </button>
+        </div>
+
+        <hr class="section-divider" />
+
+        <div class="tips-box" id="tipsBox">
+          <h3>💡 Key Takeaways — Lesson 1</h3>
+          <div class="tips-list" id="tipsList">
+            <div class="tip-item"><span class="tip-icon">🟢</span>Google's platforms are free — the only investment is your time and consistency</div>
+            <div class="tip-item"><span class="tip-icon">🎯</span>Choose ONE income path to start — trying everything at once leads to burnout</div>
+            <div class="tip-item"><span class="tip-icon">📈</span>Results compound over time — small consistent actions create big long-term results</div>
+            <div class="tip-item"><span class="tip-icon">🇿🇦</span>All paths covered are accessible from South Africa with standard internet access</div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- CHAT TOGGLE BUTTON -->
+<button class="chat-toggle" id="chatToggle" onclick="toggleChat()">
+  <span id="chatToggleIcon">💬</span>
+  <span id="chatToggleText">AI Assistant</span>
+  <div class="chat-badge" id="chatBadge"></div>
+</button>
+
+<!-- CHAT PANEL -->
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-header">
+    <div class="chat-avatar">AI</div>
+    <div class="chat-header-info">
+      <h4>Google Income Assistant</h4>
+      <p>● Online — Ask me anything</p>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+
+  <div class="chat-messages" id="chatMessages"></div>
+
+  <div class="chat-suggestions" id="chatSuggestions">
+    <button class="suggestion-chip" onclick="sendSuggestion('How do I get started?')">How to start?</button>
+    <button class="suggestion-chip" onclick="sendSuggestion('Tell me about Google AdSense')">AdSense</button>
+    <button class="suggestion-chip" onclick="sendSuggestion('How does YouTube monetisation work?')">YouTube</button>
+    <button class="suggestion-chip" onclick="sendSuggestion('How can I earn in South Africa?')">South Africa</button>
+  </div>
+
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chatInput" placeholder="Ask about Google income..." />
+    <button class="chat-send" id="chatSend" onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+
+<script>
+// ============================================================
+//  LESSON DATA
+// ============================================================
+const LESSONS = [
+  {
+    id: 1,
+    tag: 'Main Lesson',
+    dur: 'Full Training',
+    title: 'Google Income Blueprint — Full Training',
+    subtitle: 'Start here — your complete guide from beginning to end',
+    desc: "This is the core training session of the Google Income Blueprint. Watch from beginning to end to understand the full picture of how Google's free platforms can become real income streams. By the end, you'll know every available option and have the confidence to choose your starting path.",
+    type: 'custom',
+    tips: [
+      { icon: '🟢', text: "Google's platforms are free — the only investment is your time and consistency" },
+      { icon: '🎯', text: 'Choose ONE income path to start — trying everything at once leads to burnout' },
+      { icon: '📈', text: 'Results compound over time — small consistent actions create big long-term results' },
+      { icon: '🇿🇦', text: 'All paths covered are accessible from South Africa with standard internet access' }
+    ]
+  },
+  {
+    id: 2,
+    tag: 'AdSense',
+    dur: '~15 min',
+    title: 'How to Make Money with Google AdSense',
+    subtitle: "Monetise your content through Google's advertising network",
+    desc: "Google AdSense is one of the most accessible passive income tools available online. This lesson explains how AdSense works, what you need to get approved, how ad revenue is calculated, and the strategies successful bloggers use to maximise their earnings consistently over time.",
+    type: 'youtube',
+    youtubeId: 'ZpS4udw7ue8', // Replace with actual YouTube video ID if needed
+    tips: [
+      { icon: '📝', text: 'You need a website or blog with original, quality content to apply for AdSense' },
+      { icon: '💰', text: 'Revenue comes from ad clicks (CPC) and impressions (CPM) on your pages' },
+      { icon: '🕐', text: 'Patience is key — AdSense income grows slowly but becomes passive over time' },
+      { icon: '🔑', text: "Use Google's free Blogger platform to start a blog at zero cost" }
+    ]
+  },
+  {
+    id: 3,
+    tag: 'YouTube',
+    dur: '~20 min',
+    title: "YouTube Monetisation — Beginner's Guide",
+    subtitle: 'Turn your YouTube channel into a consistent income stream',
+    desc: "YouTube is one of the biggest income opportunities available through Google — and it's completely free to start. This lesson covers the YouTube Partner Program requirements, content strategy for beginners, how to grow your channel faster, and what to expect in your first 6–12 months as a creator.",
+    type: 'youtube',
+    youtubeId: 'q6YorzBNcQI', // Replace with actual YouTube video ID if needed
+    tips: [
+      { icon: '📺', text: 'You need 1,000 subscribers AND 4,000 watch hours to apply for monetisation' },
+      { icon: '🎯', text: 'Pick a focused niche — general channels grow much slower than niche-specific ones' },
+      { icon: '📅', text: 'Consistency beats quality at first — publishing regularly is what grows channels' },
+      { icon: '🇿🇦', text: 'SA-focused content in local context has less competition and grows faster' }
+    ]
+  },
+  {
+    id: 4,
+    tag: 'Google Play',
+    dur: '~12 min',
+    title: 'Earning from the Google Play Store',
+    subtitle: 'Explore app and digital product income on Google Play',
+    desc: "Google Play isn't just for big developers. This lesson explores how everyday people create simple apps, digital tools, and content to generate income through the Play Store — including no-code and low-code options that don't require programming experience or a computer science degree.",
+    type: 'youtube',
+    youtubeId: 'YXKrjGU_kHY', // Replace with actual YouTube video ID if needed
+    tips: [
+      { icon: '📱', text: 'No-code tools like MIT App Inventor allow beginners to build real apps for free' },
+      { icon: '💵', text: 'One-time $25 developer fee unlocks unlimited app publishing on Google Play' },
+      { icon: '🔄', text: 'Recurring income models (subscriptions, in-app purchases) are more sustainable' },
+      { icon: '🎮', text: 'Simple games and utility apps often outperform complex ones for beginners' }
+    ]
+  },
+  {
+    id: 5,
+    tag: 'Freelancing',
+    dur: '~18 min',
+    title: 'Freelancing with Google Workspace Tools',
+    subtitle: 'Offer services to businesses using tools you already have',
+    desc: "Google Workspace — including Docs, Sheets, Slides, and Forms — is used by millions of businesses daily. This lesson shows you how to turn your Workspace skills into a freelance service, which types of clients to target, where to find them, and how to price your work as a South African freelancer.",
+    type: 'youtube',
+    youtubeId: 'TiRFiEkidXU', // Replace with actual YouTube video ID if needed
+    tips: [
+      { icon: '🛠️', text: 'Data entry, spreadsheet management, and document formatting are always in demand' },
+      { icon: '🌍', text: 'Freelance to international clients and earn in USD — a big advantage from SA' },
+      { icon: '📋', text: 'Create a Fiverr or Upwork profile today — it costs nothing to get started' },
+      { icon: '💼', text: 'Local SA small businesses also need Workspace help — target WhatsApp groups' }
+    ]
+  },
+  {
+    id: 6,
+    tag: 'Blogger',
+    dur: '~16 min',
+    title: 'Google Blogger — Build a Blog That Earns',
+    subtitle: "Create a free blog and start generating AdSense income",
+    desc: "Google's Blogger platform is completely free and integrates directly with AdSense. This lesson walks through how to set up a blog, choose a profitable niche, write content that attracts readers, and apply for AdSense — all using 100% free Google tools with no hosting fees or subscriptions.",
+    type: 'youtube',
+    youtubeId: 'jE-SpRI3K5g', // Replace with actual YouTube video ID if needed
+    tips: [
+      { icon: '✍️', text: 'Write about topics you understand — authentic expertise builds reader trust' },
+      { icon: '🔍', text: 'Use Google Keyword Planner (free) to find topics people are searching for' },
+      { icon: '📆', text: 'Post at least twice per week consistently — volume and frequency drive growth' },
+      { icon: '⏳', text: 'Give it 6–12 months before judging results — blogging is a long-term game' }
+    ]
+  },
+  {
+    id: 7,
+    tag: 'South Africa',
+    dur: '~22 min',
+    title: 'Making Money Online in South Africa',
+    subtitle: 'Practical online income strategies for the SA context',
+    desc: "This lesson addresses the unique context of earning online from South Africa — including how to receive international payments, what platforms work locally, data cost considerations, exchange rate advantages, and which income paths suit different lifestyles and schedules in the South African market.",
+    type: 'youtube',
+    youtubeId: 'BVe7dbSlmhE', // Replace with actual YouTube video ID if needed
+    tips: [
+      { icon: '💱', text: 'Earning in USD or EUR and spending in ZAR gives a massive purchasing power advantage' },
+      { icon: '🏦', text: 'Use Payoneer or Wise to receive international payments reliably from SA' },
+      { icon: '📶', text: "Write content offline using Google Docs — upload when on Wi-Fi to save data costs" },
+      { icon: '🌐', text: 'SA has lower competition in most Google income niches compared to US/UK creators' }
+    ]
+  }
+];
+
+let currentLesson = 1;
+let completed = JSON.parse(localStorage.getItem('gib_completed') || '[]');
+let chatOpen = false;
+let botTyping = false;
+
+// ============================================================
+//  INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', function () {
+  const email = sessionStorage.getItem('gib_user_email') || '';
+  document.getElementById('userEmailBadge').textContent = email;
+
+  updateProgress();
+  loadLesson(1);
+  restoreCompleted();
+
+  // Show chat welcome badge after 3s
+  setTimeout(function () {
+    document.getElementById('chatBadge').classList.add('pulse');
+  }, 3000);
+
+  // Init chat welcome
+  setTimeout(function () {
+    addBotMessage("👋 Welcome to the Members Area! I'm your **Google Income Assistant**.\n\nAsk me anything about earning with free Google tools. Try the quick suggestions below, or type your own question!");
+  }, 800);
+});
+
+// ============================================================
+//  LOAD LESSON
+// ============================================================
+function loadLesson(id) {
+  const lesson = LESSONS.find(l => l.id === id);
+  if (!lesson) return;
+  currentLesson = id;
+
+  // Update sidebar active state
+  document.querySelectorAll('.lesson-item').forEach(el => el.classList.remove('active'));
+  const activeItem = document.querySelector(`[data-lesson="${id}"]`);
+  if (activeItem) activeItem.classList.add('active');
+
+  // Update video
+  const container = document.getElementById('videoContainer');
+  container.innerHTML = '';
+
+  if (lesson.type === 'custom') {
+    // BSPlayer embed (main video)
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = 'position:relative;padding-bottom:56.25%;height:0;width:100%;';
+    const iframe = document.createElement('iframe');
+    iframe.src = 'https://streamblack.lovable.app/embed/ab58d60a-0367-43c9-b509-1cce6405a803';
+    iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;border:none;display:block;';
+    iframe.allow = 'autoplay;encrypted-media;fullscreen';
+    iframe.allowFullscreen = true;
+    iframe.scrolling = 'no';
+    wrapper.appendChild(iframe);
+    container.appendChild(wrapper);
+  } else {
+    // YouTube embed
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = 'position:relative;padding-bottom:56.25%;height:0;width:100%;';
+    const iframe = document.createElement('iframe');
+    iframe.src = 'https://www.youtube-nocookie.com/embed/' + lesson.youtubeId + '?rel=0&modestbranding=1';
+    iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;border:none;';
+    iframe.allow = 'accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture';
+    iframe.allowFullscreen = true;
+    wrapper.appendChild(iframe);
+    container.appendChild(wrapper);
+  }
+
+  // Update lesson info
+  document.getElementById('lessonTagBadge').textContent = lesson.tag;
+  document.getElementById('lessonDurBadge').textContent = lesson.dur;
+  document.getElementById('lessonTitle').textContent = lesson.title;
+  document.getElementById('lessonSubtitle').textContent = lesson.subtitle;
+  document.getElementById('lessonDesc').textContent = lesson.desc;
+
+  // Update tips
+  document.querySelector('#tipsBox h3').textContent = '💡 Key Takeaways — Lesson ' + id;
+  const tipsList = document.getElementById('tipsList');
+  tipsList.innerHTML = lesson.tips.map(t =>
+    `<div class="tip-item"><span class="tip-icon">${t.icon}</span>${t.text}</div>`
+  ).join('');
+
+  // Update complete button
+  const isDone = completed.includes(id);
+  const btn = document.getElementById('btnComplete');
+  btn.classList.toggle('done', isDone);
+  document.getElementById('completeIcon').textContent = isDone ? '✔' : '○';
+  document.getElementById('completeText').textContent = isDone ? 'Completed!' : 'Mark as Complete';
+
+  // Update next button
+  document.getElementById('btnNext').disabled = id >= 7;
+
+  // Scroll to top
+  document.querySelector('.app-main').scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Close sidebar on mobile
+  if (window.innerWidth <= 768) closeSidebar();
+}
+
+// ============================================================
+//  MARK COMPLETE
+// ============================================================
+function markComplete() {
+  const id = currentLesson;
+  if (!completed.includes(id)) {
+    completed.push(id);
+    localStorage.setItem('gib_completed', JSON.stringify(completed));
+  }
+
+  const btn = document.getElementById('btnComplete');
+  btn.classList.add('done');
+  document.getElementById('completeIcon').textContent = '✔';
+  document.getElementById('completeText').textContent = 'Completed!';
+  updateProgress();
+  restoreCompleted();
+}
+
+function restoreCompleted() {
+  completed.forEach(function (id) {
+    const el = document.querySelector(`[data-lesson="${id}"]`);
+    if (el) el.classList.add('completed');
+  });
+}
+
+function updateProgress() {
+  const count = completed.length;
+  const pct = Math.round((count / 7) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = count + ' / 7';
+}
+
+// ============================================================
+//  NEXT LESSON
+// ============================================================
+function goNext() {
+  if (currentLesson < 7) loadLesson(currentLesson + 1);
+}
+
+// ============================================================
+//  SIDEBAR TOGGLE
+// ============================================================
+document.getElementById('sidebarToggle').addEventListener('click', function () {
+  const sidebar = document.getElementById('appSidebar');
+  sidebar.classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('show', sidebar.classList.contains('open'));
+});
+document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
+function closeSidebar() {
+  document.getElementById('appSidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+
+// ============================================================
+//  LOGOUT
+// ============================================================
+function doLogout() {
+  sessionStorage.clear();
+  window.location.href = 'login.html';
+}
+
+// ============================================================
+//  BSPlayer message handler
+// ============================================================
+window.addEventListener('message', function (e) {
+  if (!e.data) return;
+  // handled by inline iframe if needed
+});
+
+// ============================================================
+//  CHAT
+// ============================================================
+function toggleChat() {
+  chatOpen = !chatOpen;
+  const panel = document.getElementById('chatPanel');
+  const btn = document.getElementById('chatToggle');
+  const icon = document.getElementById('chatToggleIcon');
+  const label = document.getElementById('chatToggleText');
+  panel.classList.toggle('open', chatOpen);
+  btn.classList.toggle('open', chatOpen);
+  icon.textContent = chatOpen ? '✕' : '💬';
+  label.textContent = chatOpen ? 'Close Chat' : 'AI Assistant';
+  document.getElementById('chatBadge').classList.remove('pulse');
+  if (chatOpen) document.getElementById('chatInput').focus();
+}
+
+function sendSuggestion(text) {
+  document.getElementById('chatInput').value = text;
+  sendMessage();
+  document.getElementById('chatSuggestions').style.display = 'none';
+}
+
+function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text || botTyping) return;
+  input.value = '';
+
+  addUserMessage(text);
+  showTyping();
+
+  const delay = 900 + Math.random() * 600;
+  setTimeout(function () {
+    removeTyping();
+    const reply = getBotReply(text);
+    addBotMessage(reply);
+  }, delay);
+}
+
+document.getElementById('chatInput').addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') sendMessage();
+});
+
+function addUserMessage(text) {
+  const container = document.getElementById('chatMessages');
+  const time = getTime();
+  container.insertAdjacentHTML('beforeend', `
+    <div class="msg user">
+      <div class="msg-avatar">Me</div>
+      <div>
+        <div class="msg-bubble">${escHtml(text)}</div>
+        <div class="msg-time">${time}</div>
+      </div>
+    </div>
+  `);
+  scrollChat();
+}
+
+function addBotMessage(text) {
+  const container = document.getElementById('chatMessages');
+  const time = getTime();
+  const html = formatBot(text);
+  container.insertAdjacentHTML('beforeend', `
+    <div class="msg bot">
+      <div class="msg-avatar">AI</div>
+      <div>
+        <div class="msg-bubble">${html}</div>
+        <div class="msg-time">${time}</div>
+      </div>
+    </div>
+  `);
+  scrollChat();
+}
+
+function showTyping() {
+  botTyping = true;
+  document.getElementById('chatMessages').insertAdjacentHTML('beforeend', `
+    <div class="typing-row" id="typingRow">
+      <div class="msg-avatar" style="width:28px;height:28px;border-radius:50%;background:#16A34A;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:800;color:#fff;flex-shrink:0;">AI</div>
+      <div class="typing-bubble">
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      </div>
+    </div>
+  `);
+  scrollChat();
+}
+
+function removeTyping() {
+  botTyping = false;
+  const el = document.getElementById('typingRow');
+  if (el) el.remove();
+}
+
+function scrollChat() {
+  const el = document.getElementById('chatMessages');
+  el.scrollTop = el.scrollHeight;
+}
+
+function getTime() {
+  const d = new Date();
+  return d.getHours().toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0');
+}
+
+function escHtml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function formatBot(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>');
+}
+
+// ============================================================
+//  BOT REPLIES
+// ============================================================
+const BOT_RULES = [
+  {
+    keys: ['hello', 'hi ', 'hey ', 'good morning', 'good afternoon', 'good day', 'help me', 'what can you'],
+    reply: "👋 Hi there! I'm your **Google Income Assistant** — here to help you navigate every income path in this blueprint.\n\nYou can ask me about:\n• 💰 Google AdSense & Blogging\n• 📺 YouTube Monetisation\n• 📱 Google Play Store\n• 🛠️ Google Workspace Freelancing\n• 🚀 How to get started as a beginner\n• 🇿🇦 Earning online from South Africa\n\nWhat would you like to explore first?"
+  },
+  {
+    keys: ['adsense', 'ad sense', 'blog', 'blogger', 'website', 'content', 'publishing', 'passive'],
+    reply: "💰 **Google AdSense** is one of the most popular ways to earn passive income online.\n\n**How it works:**\nYou create a website or blog, publish helpful content, and Google places relevant ads on your pages. You earn money when visitors view or click those ads.\n\n**To get started:**\n1. Create a free blog on Blogger.com (owned by Google)\n2. Write consistent, helpful content in a specific niche\n3. Apply for AdSense once you have 15–20 quality posts\n4. Start earning from ad impressions and clicks\n\n**Key tip:** Pick a niche you understand well. Finance, health, technology, and education niches pay the highest ad rates.\n\nWant to know how to choose a profitable blogging niche?"
+  },
+  {
+    keys: ['youtube', 'video', 'channel', 'subscriber', 'watch', 'monetis', 'monetiz', 'creator'],
+    reply: "📺 **YouTube** is one of the biggest income opportunities through Google — and free to start.\n\n**YouTube Partner Program requirements:**\n• 1,000 subscribers\n• 4,000 public watch hours in 12 months\n• OR 10 million Shorts views in 90 days\n\n**How to grow faster:**\n1. Choose a focused niche (finance, tutorials, lifestyle)\n2. Post consistently — at least 1 video per week\n3. Write keyword-rich titles and descriptions\n4. Create compelling custom thumbnails\n5. Engage with every comment in your first months\n\n**SA tip:** Local content in Zulu, Xhosa, Afrikaans, or English targeting SA topics has far less competition — which means faster growth potential.\n\nDo you want advice on choosing a YouTube niche?"
+  },
+  {
+    keys: ['play store', 'google play', 'app', 'android', 'developer', 'application', 'game'],
+    reply: "📱 **Google Play Store** offers income opportunities even without being a developer.\n\n**Options include:**\n• Building simple apps with MIT App Inventor (free, no coding)\n• Publishing ebooks and digital guides on Play Books\n• Creating games using GDevelop (free no-code tool)\n• Developing tools using web-based platforms\n\n**Developer account:**\nA one-time $25 USD fee registers your Google Play developer account — unlimited publishing after that.\n\n**Income models:**\n• Paid downloads\n• In-app purchases\n• Subscriptions\n• Ad revenue within your app\n\nThis path takes more time to learn but generates recurring income once established. Which aspect interests you most?"
+  },
+  {
+    keys: ['workspace', 'docs', 'sheets', 'slides', 'forms', 'drive', 'freelanc', 'service', 'client', 'fiverr', 'upwork'],
+    reply: "🛠️ **Google Workspace Freelancing** is often the fastest path to earning — because businesses need these services right now.\n\n**Services you can offer:**\n• Spreadsheet creation and data management (Google Sheets)\n• Document formatting and business writing (Google Docs)\n• Presentation design (Google Slides)\n• Survey and form creation (Google Forms)\n• Virtual assistant services using Google Drive\n\n**Where to find clients:**\n• Fiverr and Upwork (international clients)\n• LinkedIn (professional services)\n• Local WhatsApp business groups\n• Facebook groups for SA small businesses\n\n**SA freelance rates:** Many South African freelancers start at R150–R400/hour for Workspace services, increasing as they build a portfolio.\n\nWould you like tips on writing your first Fiverr gig description?"
+  },
+  {
+    keys: ['start', 'begin', 'first step', 'how do i', 'where do i', 'new to', 'beginner', 'zero', 'no experience', 'no skills'],
+    reply: "🚀 **Getting Started — Your Clear First Steps**\n\nHere's the most direct path for a complete beginner:\n\n**Step 1:** Finish the main lesson in this members area first — it gives you the full overview.\n\n**Step 2:** Choose ONE path to focus on. Don't try to do everything at once.\n\n**Which path suits you?**\n• 🔵 **Quickest results:** Google Workspace freelancing (can earn within 2–4 weeks with effort)\n• 🟢 **Best long-term:** YouTube or blogging (3–6 months to monetise, grows for years)\n• 🟡 **Most passive:** AdSense (slow to start, but earns while you sleep once established)\n\n**Step 3:** Watch the complementary lessons in your current module — each covers one specific platform in detail.\n\n**Step 4:** Take one action today. Not tomorrow — today.\n\nWhich path feels most interesting to you?"
+  },
+  {
+    keys: ['how much', 'how long', 'realistic', 'timeline', 'when will', 'how fast', 'quickly'],
+    reply: "⏱️ **Honest Timeline Expectations**\n\nI'll give you straight answers — not hype.\n\n**Freelancing (Google Workspace):**\n→ First client: 1–4 weeks if actively applying\n→ Steady income: 1–3 months of building a profile\n\n**YouTube:**\n→ Monetisation: typically 6–18 months of consistent posting\n→ Meaningful income: 12–24+ months\n\n**Blogging with AdSense:**\n→ AdSense approval: 1–3 months with 15–20 quality posts\n→ Meaningful passive income: 6–18 months\n\n**Google Play:**\n→ First app published: 1–3 months to learn and build\n→ Income: depends heavily on the app and marketing\n\n**The truth:** The people who succeed aren't the most talented — they're the ones who kept going when most people quit. Consistency is everything."
+  },
+  {
+    keys: ['free', 'cost', 'money to start', 'investment', 'no money', 'budget', 'how much does'],
+    reply: "✅ **All Core Google Income Tools Are Free**\n\nHere's the full cost breakdown:\n\n• **Google AdSense** → Free to apply and use\n• **Blogger** → Free website builder by Google\n• **Google Sites** → Free\n• **YouTube** → Free to create and upload\n• **Google Docs / Sheets / Slides** → Free\n• **Google Drive** → 15GB free storage\n• **Google Forms** → Free\n• **Google Play** → One-time $25 developer fee (only if publishing apps)\n\n**What you truly need:**\n✔ A device (a smartphone works for most income paths)\n✔ Internet access\n✔ Time, consistency, and the knowledge of what to do\n\nThe blueprint you're inside right now gives you that knowledge. The tools are free. The rest is up to you."
+  },
+  {
+    keys: ['south africa', ' sa ', 'rand', 'zar', 'johannesburg', 'cape town', 'durban', 'local', 'pretoria', 'soweto'],
+    reply: "🇿🇦 **Online Income in the South African Context**\n\nGreat news — Google's platforms are fully accessible in SA and many local creators are already earning from them.\n\n**What works especially well in SA:**\n• YouTube covering SA topics (finance, culture, lifestyle, local advice)\n• Blogging about SA-specific subjects (very low competition vs. US/UK)\n• Freelancing to international clients (earn in USD, spend in ZAR — powerful advantage)\n• Google Workspace services for local small businesses\n\n**Receiving payments:**\n• Google/YouTube pays via bank transfer in your local currency\n• Freelance platforms: Payoneer and Wise work well in South Africa\n\n**Data cost tip:** Write content offline in Google Docs and upload on Wi-Fi to save mobile data.\n\n**SA advantage:** Even modest USD earnings translate to strong ZAR income due to the exchange rate. A $500/month YouTube channel is R9,000+ per month locally."
+  },
+  {
+    keys: ['thank', 'thanks', 'awesome', 'great', 'helpful', 'amazing', 'good job', 'nice', 'love it'],
+    reply: "😊 You're very welcome! That's exactly what I'm here for.\n\n**Remember:** Knowledge without action doesn't change your situation. The most important step is the one you take today.\n\n**Your options at a glance:**\n• 💰 AdSense & Blogging\n• 📺 YouTube\n• 📱 Google Play\n• 🛠️ Workspace Freelancing\n\nFeel free to ask anything else — I'm here the whole time you're in this members area. You've got this! 🚀"
+  },
+  {
+    keys: ['bye', 'goodbye', 'see you', 'later', 'exit', 'closing'],
+    reply: "👋 Take care! Keep going through the lessons and remember — every successful online earner started exactly where you are right now.\n\nCome back anytime. Good luck on your Google income journey! 💪🚀"
+  },
+  {
+    keys: ['adsense approved', 'get approved', 'how to get approved', 'requirements for adsense'],
+    reply: "✅ **Getting AdSense Approved — What You Need**\n\n1. **A website or blog** with original content (Blogger.com is free and Google-owned)\n2. **At least 15–20 quality posts** — not just filler, genuinely useful content\n3. **A real 'About', 'Contact', and 'Privacy Policy' page**\n4. **No copyrighted content** — original writing only\n5. **Consistent traffic** — not required but helps approval\n\n**Common rejection reasons:**\n• Too little content at time of application\n• Website not yet navigable or professional looking\n• Content doesn't meet Google's policies\n\n**Pro tip:** Apply early but expect to wait 2–4 weeks for review. If rejected, fix the issue noted and reapply after 30 days.\n\nWant to know which niches get the highest AdSense rates?"
+  },
+  {
+    keys: ['niche', 'topic', 'what to write', 'what to make', 'what content', 'ideas'],
+    reply: "💡 **Choosing Your Niche — What Actually Works**\n\n**High AdSense/YouTube paying niches:**\n• Personal finance (budgeting, savings, investing)\n• Technology reviews and tutorials\n• Health and wellness\n• Online business and digital skills\n• Education and how-to content\n\n**SA-specific opportunities (low competition):**\n• South African personal finance advice\n• Local travel and tourism content\n• Entrepreneurship and hustle culture in SA\n• Tech tutorials for African audiences\n• Local language content (Zulu, Xhosa, Afrikaans)\n\n**The golden rule:** Choose a niche that sits at the intersection of:\n1. Something you genuinely know about\n2. Something people actively search for\n3. Something with monetisation potential\n\nWant help thinking through which niche might suit you?"
+  }
+];
+
+const FALLBACK = "I'm not sure I have a specific answer for that, but here are the main topics I can help with:\n\n• **Google AdSense** — earn from website ads\n• **YouTube** — build a channel that monetises\n• **Google Play** — app and digital product income\n• **Google Workspace** — freelance services\n• **Getting started** — your first steps as a beginner\n• **Earning from South Africa** — local context\n\nType any of these topics and I'll give you detailed guidance!";
+
+function getBotReply(input) {
+  const lower = ' ' + input.toLowerCase() + ' ';
+  for (let i = 0; i < BOT_RULES.length; i++) {
+    const rule = BOT_RULES[i];
+    for (let j = 0; j < rule.keys.length; j++) {
+      if (lower.includes(rule.keys[j])) return rule.reply;
+    }
+  }
+  return FALLBACK;
+}
+</script>
+
+</body>
+</html>
