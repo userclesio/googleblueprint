@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thank You — IA Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; color: #1F2937; background: #F9FAFB; line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: #0A1628; padding: 0 24px; height: 62px; display: flex; align-items: center; justify-content: center; }
+    .header__logo { font-size: 1.1rem; font-weight: 800; color: #fff; text-decoration: none; }
+    .header__logo em { color: #F59E0B; font-style: normal; }
+    .main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 24px; }
+    .card {
+      background: #fff;
+      border: 1px solid #E5E7EB;
+      border-radius: 16px;
+      padding: 52px 40px;
+      max-width: 560px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    }
+    .icon {
+      width: 80px; height: 80px;
+      background: #DCFCE7;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 28px;
+    }
+    .icon svg { width: 40px; height: 40px; }
+    h1 { font-size: 1.75rem; font-weight: 800; color: #111827; margin-bottom: 12px; }
+    .subtitle { font-size: 1rem; color: #6B7280; margin-bottom: 32px; line-height: 1.7; }
+    .subtitle strong { color: #111827; }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #16A34A;
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 700;
+      padding: 16px 36px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      box-shadow: 0 4px 14px rgba(22,163,74,0.35);
+    }
+    .cta-btn:hover { background: #15803D; transform: translateY(-1px); }
+    .cta-btn svg { width: 22px; height: 22px; flex-shrink: 0; }
+    .note { margin-top: 24px; font-size: 0.82rem; color: #9CA3AF; }
+    .divider { border: none; border-top: 1px solid #F3F4F6; margin: 32px 0; }
+    .steps { text-align: left; display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+    .step { display: flex; align-items: flex-start; gap: 14px; }
+    .step-num {
+      background: #0A1628;
+      color: #F59E0B;
+      font-size: 0.78rem;
+      font-weight: 800;
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .step-text { font-size: 0.9rem; color: #4B5563; line-height: 1.6; }
+    .step-text strong { color: #111827; }
+    .footer-bar { background: #060D1A; color: rgba(255,255,255,0.5); text-align: center; padding: 20px 24px; font-size: 0.78rem; }
+    .footer-bar a { color: rgba(255,255,255,0.5); margin: 0 8px; text-decoration: none; }
+    .footer-bar a:hover { color: #fff; }
+    @media (max-width: 480px) {
+      .card { padding: 36px 24px; }
+      h1 { font-size: 1.4rem; }
+      .cta-btn { font-size: 0.95rem; padding: 14px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <a href="index.html" class="header__logo">IA <em>Tools</em></a>
+</header>
+
+<div class="main">
+  <div class="card">
+
+    <div class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    </div>
+
+    <h1>Thank You for Your Purchase!</h1>
+    <p class="subtitle">Your order has been confirmed. <strong>Click the button below</strong> to access your product and get started right away.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>Click the button below</strong> to open WhatsApp and access your product.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>Follow the instructions</strong> sent to you to get full access to the guide.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>Start learning</strong> and apply the strategies to generate your first income online.</div>
+      </div>
+    </div>
+
+    <a href="https://wa.link/0mil87" target="_blank" class="cta-btn">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.528 5.855L.057 23.882l6.197-1.625A11.934 11.934 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.793 9.793 0 01-4.988-1.364l-.357-.212-3.679.965.981-3.594-.233-.369A9.79 9.79 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/>
+      </svg>
+      Access Your Product Now
+    </a>
+
+    <p class="note">Having trouble? Contact us at <a href="mailto:ferramentasvsl@gmail.com" style="color:#16A34A;">ferramentasvsl@gmail.com</a></p>
+
+  </div>
+</div>
+
+<div class="footer-bar">
+  &copy; 2024 IA Tools · Producer: Kwame Obeng ·
+  <a href="index.html">Home</a>
+  <a href="support.html">Support</a>
+  <a href="refund-policy.html">Refund Policy</a>
+  <a href="privacy-policy.html">Privacy Policy</a>
+</div>
+
+</body>
+</html>
