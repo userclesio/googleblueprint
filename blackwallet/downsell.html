@@ -344,15 +344,40 @@
         <li class="not-included">Priority email support</li>
       </ul>
 
-      <div class="btn-group">
-        <a href="https://selar.com/288722gt28" class="cta-btn">
-          Yes! Give Me Access for KSh 397
-          <small>Get my money moving — one-time payment only</small>
-        </a>
-        <a href="../thank-you.html" class="no-btn">
-          No, I'll deal with the bank delays on my own
-        </a>
-      </div>
+      <!-- Landpay Downsell: BLACK WALLET -->
+      <div id="landpay-upsell-cfea8278-4b3c-4d31-88e4-bdf786c90883"></div>
+      <script>
+      (function() {
+        var params = new URLSearchParams(window.location.search);
+        var txId = params.get('landpay_tx') || window.landpayTxId || '';
+        var linkId = params.get('landpay_link') || window.landpayLinkId || '';
+        var c = document.getElementById('landpay-upsell-cfea8278-4b3c-4d31-88e4-bdf786c90883');
+        if (!c) return;
+
+        var frameOrigin = "https://landpay.site";
+        var f = document.createElement('iframe');
+        f.src = "https://landpay.site/upsell/cfea8278-4b3c-4d31-88e4-bdf786c90883" + '?embed=true&tx=' + encodeURIComponent(txId) + '&link=' + encodeURIComponent(linkId);
+        f.style.cssText = "width:100%;border:none;min-height:600px;border-radius:16px;overflow:hidden";
+        c.appendChild(f);
+
+        function handleMessage(e) {
+          if (e.origin !== frameOrigin) return;
+          if (e.source !== f.contentWindow) return;
+          if (!e.data || typeof e.data !== 'object') return;
+
+          if (e.data.type === 'landpay-resize' && typeof e.data.height === 'number') {
+            f.style.height = Math.max(320, e.data.height) + 'px';
+          }
+
+          if (e.data.type === 'landpay-redirect' && typeof e.data.url === 'string' && e.data.url) {
+            window.removeEventListener('message', handleMessage);
+            window.location.href = e.data.url;
+          }
+        }
+
+        window.addEventListener('message', handleMessage);
+      })();
+      </script>
 
       <div class="guarantee">
         <div class="guarantee-icon">🔒</div>
