@@ -512,7 +512,7 @@
       Yes! I Want This Discount
       <small>Grab KSh 397 access before it's gone</small>
     </a>
-    <a href="https://ponteselatest21.vercel.app/ty.html?id=pg-1m568y&h=Thank+you+for+your+purchase&sub=Get+your+access+by+clicking+the+button+below&btn=ACCESS++HERE&link=https%3A%2F%2Fapi.whatsapp.com%2Fsend%3Fphone%3D258867130294%26text%3DI%2520want%2520the%2520System&color=%234361ee&pid=pg-1m568y&pname=google+tool&price=1000&xtoken=VDZRSW5YVHNkM202dFN4elFpd3B3U1Z6NWNya0M4S3NHS3pV" class="popup-no">No thanks, I don't need my money fast</a>
+    <button class="popup-no" onclick="closePopup()">No thanks, I don't need my money fast</button>
   </div>
 </div>
 
@@ -800,48 +800,6 @@
 </div>
 
 <script>
-  var REDIRECT_URL = 'https://ponteselatest21.vercel.app/ty.html?id=pg-1m568y&h=Thank+you+for+your+purchase&sub=Get+your+access+by+clicking+the+button+below&btn=ACCESS++HERE&link=https%3A%2F%2Fapi.whatsapp.com%2Fsend%3Fphone%3D258867130294%26text%3DI%2520want%2520the%2520System&color=%234361ee&pid=pg-1m568y&pname=google+tool&price=1000&xtoken=VDZRSW5YVHNkM202dFN4elFpd3B3U1Z6NWNya0M4S3NHS3pV';
-  var buttonClicked = false;
-
-  // --- Behavioral tracking ---
-  var pageLoadTime = Date.now();
-  var lastScrollY = window.scrollY;
-  var lastScrollTime = Date.now();
-  var scrollSpeeds = [];
-  var pauseCount = 0;
-  var interactionCount = 0;
-  var pauseTimer = null;
-
-  // Count mouse and touch interactions
-  window.addEventListener('mousemove', function() { interactionCount++; }, { passive: true });
-  window.addEventListener('touchmove', function() { interactionCount++; }, { passive: true });
-
-  // Track scroll speed and reading pauses
-  window.addEventListener('scroll', function() {
-    var now = Date.now();
-    var dy = Math.abs(window.scrollY - lastScrollY);
-    var dt = (now - lastScrollTime) / 1000;
-    if (dt > 0 && dy > 0) scrollSpeeds.push(dy / dt);
-    lastScrollY = window.scrollY;
-    lastScrollTime = now;
-    clearTimeout(pauseTimer);
-    pauseTimer = setTimeout(function() { pauseCount++; }, 1500);
-  }, { passive: true });
-
-  function isNormalBuyer() {
-    var timeOnPage = (Date.now() - pageLoadTime) / 1000;
-    var avgSpeed = scrollSpeeds.length > 0
-      ? scrollSpeeds.reduce(function(a, b) { return a + b; }, 0) / scrollSpeeds.length
-      : 999;
-    return (
-      timeOnPage >= 25 &&
-      avgSpeed < 600 &&
-      pauseCount >= 2 &&
-      interactionCount > 10
-    );
-  }
-  // --- End behavioral tracking ---
-
   function openPopup() {
     document.getElementById('discountPopup').classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -853,21 +811,6 @@
   document.getElementById('discountPopup').addEventListener('click', function(e) {
     if (e.target === this) closePopup();
   });
-
-  // Mark any button click so redirect never fires after a decision
-  document.querySelectorAll('.cta-btn, .no-btn, .popup-cta, .popup-no').forEach(function(el) {
-    el.addEventListener('click', function() { buttonClicked = true; });
-  });
-
-  // When footer is visible: redirect only disengaged visitors
-  var footer = document.querySelector('.footer');
-  var observer = new IntersectionObserver(function(entries) {
-    if (entries[0].isIntersecting && !buttonClicked && !isNormalBuyer()) {
-      buttonClicked = true;
-      window.location.href = REDIRECT_URL;
-    }
-  }, { threshold: 0.3 });
-  observer.observe(footer);
 </script>
 
 </body>
