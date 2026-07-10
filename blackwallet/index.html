@@ -710,15 +710,40 @@
         <li>Priority support via email</li>
       </ul>
 
-      <div class="btn-group">
-        <a href="https://selar.com/1k41zg7541" class="cta-btn">
-          Yes! I Want My Money in My Account Fast
-          <small>Secure my Black Wallet for KSh 777 — one time only</small>
-        </a>
-        <button class="no-btn" onclick="openPopup()">
-          No, I'll keep waiting and risk losing access to my earnings
-        </button>
-      </div>
+      <!-- Landpay Upsell: BLACK WALLET -->
+      <div id="landpay-upsell-212c56b5-588d-415f-84a3-b3f59b51b190"></div>
+      <script>
+      (function() {
+        var params = new URLSearchParams(window.location.search);
+        var txId = params.get('landpay_tx') || window.landpayTxId || '';
+        var linkId = params.get('landpay_link') || window.landpayLinkId || '';
+        var c = document.getElementById('landpay-upsell-212c56b5-588d-415f-84a3-b3f59b51b190');
+        if (!c) return;
+
+        var frameOrigin = "https://landpay.site";
+        var f = document.createElement('iframe');
+        f.src = "https://landpay.site/upsell/212c56b5-588d-415f-84a3-b3f59b51b190" + '?embed=true&tx=' + encodeURIComponent(txId) + '&link=' + encodeURIComponent(linkId);
+        f.style.cssText = "width:100%;border:none;min-height:600px;border-radius:16px;overflow:hidden";
+        c.appendChild(f);
+
+        function handleMessage(e) {
+          if (e.origin !== frameOrigin) return;
+          if (e.source !== f.contentWindow) return;
+          if (!e.data || typeof e.data !== 'object') return;
+
+          if (e.data.type === 'landpay-resize' && typeof e.data.height === 'number') {
+            f.style.height = Math.max(320, e.data.height) + 'px';
+          }
+
+          if (e.data.type === 'landpay-redirect' && typeof e.data.url === 'string' && e.data.url) {
+            window.removeEventListener('message', handleMessage);
+            window.location.href = e.data.url;
+          }
+        }
+
+        window.addEventListener('message', handleMessage);
+      })();
+      </script>
 
       <div class="guarantee">
         <div class="guarantee-icon">🔒</div>
