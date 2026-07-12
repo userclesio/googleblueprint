@@ -572,7 +572,8 @@ const LESSONS = [
     title: 'IA Tools — Full Training',
     subtitle: 'Start here — your complete guide from beginning to end',
     desc: "This is the core training session of the IA Tools. Watch from beginning to end to understand the full picture of how Google's free platforms can become real income streams. By the end, you'll know every available option and have the confidence to choose your starting path.",
-    type: 'custom',
+    type: 'vturb',
+    vturbId: '6a537ef33d8ea0afcdc92414',
     tips: [
       { icon: '🟢', text: "Google's platforms are free — the only investment is your time and consistency" },
       { icon: '🎯', text: 'Choose ONE income path to start — trying everything at once leads to burnout' },
@@ -722,8 +723,18 @@ function loadLesson(id) {
   const container = document.getElementById('videoContainer');
   container.innerHTML = '';
 
-  if (lesson.type === 'custom') {
-    // BSPlayer embed (main video)
+  if (lesson.type === 'vturb') {
+    // VTurb SmartPlayer embed
+    container.innerHTML = '<vturb-smartplayer id="vid-' + lesson.vturbId + '" style="display:block;margin:0 auto;width:100%;"><div class="vturb-player-placeholder" style="position:relative;width:100%;padding:56.25% 0 0;z-index:0;background-color:black;"></div></vturb-smartplayer>';
+    if (!document.getElementById('vturb-script-' + lesson.vturbId)) {
+      var s = document.createElement('script');
+      s.id = 'vturb-script-' + lesson.vturbId;
+      s.src = 'https://scripts.converteai.net/f0ada385-6eec-4f29-9366-31cd3b1a8fb6/players/' + lesson.vturbId + '/v4/player.js';
+      s.async = true;
+      document.head.appendChild(s);
+    }
+  } else if (lesson.type === 'custom') {
+    // BSPlayer embed
     const wrapper = document.createElement('div');
     wrapper.style.cssText = 'position:relative;padding-bottom:56.25%;height:0;width:100%;';
     const iframe = document.createElement('iframe');
