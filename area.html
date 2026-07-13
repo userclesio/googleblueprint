@@ -24,12 +24,97 @@
       --text-3: #6B7280;
     }
 
+    /* ============================================================
+       LOGIN SCREEN
+    ============================================================ */
+    #loginScreen {
+      position: fixed; inset: 0; z-index: 999;
+      background: #07111F;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 24px;
+    }
+    #loginScreen::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(22,163,74,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(245,158,11,0.07) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .login-wrap { position: relative; z-index: 1; width: 100%; max-width: 420px; }
+
+    .login-logo { text-align: center; margin-bottom: 32px; }
+    .login-logo__text { font-size: 1.4rem; font-weight: 900; color: #fff; letter-spacing: -0.02em; }
+    .login-logo__text em { color: var(--gold); font-style: normal; }
+    .login-logo__sub { display: block; font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-top: 6px; letter-spacing: 0.05em; text-transform: uppercase; }
+
+    .login-card {
+      background: rgba(17,29,46,0.95);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px; padding: 36px 32px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+      backdrop-filter: blur(12px);
+    }
+    .login-card h1 { font-size: 1.35rem; font-weight: 800; color: #fff; margin-bottom: 6px; text-align: center; }
+    .login-card p { font-size: 0.875rem; color: rgba(255,255,255,0.5); text-align: center; margin-bottom: 28px; }
+
+    .form-field { margin-bottom: 18px; }
+    .form-field label { display: block; font-size: 0.8rem; font-weight: 600; color: rgba(255,255,255,0.7); margin-bottom: 8px; letter-spacing: 0.04em; text-transform: uppercase; }
+    .form-field input {
+      width: 100%; padding: 13px 16px;
+      background: rgba(255,255,255,0.06);
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: 8px; color: #fff;
+      font-size: 0.95rem; font-family: 'Inter', sans-serif;
+      transition: border-color 0.2s, background 0.2s; outline: none;
+    }
+    .form-field input:focus { border-color: #16A34A; background: rgba(22,163,74,0.06); }
+    .form-field input::placeholder { color: rgba(255,255,255,0.25); }
+
+    .login-error {
+      display: none;
+      background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 8px; padding: 12px 16px;
+      font-size: 0.875rem; color: #FCA5A5;
+      margin-bottom: 18px; text-align: center;
+    }
+
+    .login-btn {
+      width: 100%; padding: 15px;
+      background: #16A34A; color: #fff;
+      border: none; border-radius: 8px;
+      font-size: 1rem; font-weight: 700;
+      cursor: pointer; font-family: 'Inter', sans-serif;
+      transition: all 0.2s; margin-top: 6px;
+      box-shadow: 0 4px 20px rgba(22,163,74,0.3);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .login-btn:hover:not(:disabled) { background: #15803D; transform: translateY(-1px); }
+    .login-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+    .badge-row { display: flex; justify-content: center; gap: 16px; margin-top: 28px; flex-wrap: wrap; }
+    .badge-item { display: flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.35); font-size: 0.75rem; }
+
+    .login-footer { margin-top: 22px; text-align: center; font-size: 0.78rem; color: rgba(255,255,255,0.3); line-height: 1.7; }
+    .login-footer a { color: rgba(255,255,255,0.4); text-decoration: underline; }
+
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
+      border-radius: 50%; animation: spin 0.7s linear infinite; display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ============================================================
+       MAIN APP (hidden until logged in)
+    ============================================================ */
+    #appContent { display: none; }
+
     /* HEADER */
     .header {
-      background: #070E1C;
-      border-bottom: 1px solid var(--border);
-      padding: 0 24px;
-      height: 62px;
+      background: #070E1C; border-bottom: 1px solid var(--border);
+      padding: 0 24px; height: 62px;
       display: flex; align-items: center; justify-content: space-between;
       position: sticky; top: 0; z-index: 100;
     }
@@ -55,8 +140,7 @@
     .hero {
       background: linear-gradient(135deg, #0A1628 0%, #111D2E 100%);
       border-bottom: 1px solid var(--border);
-      padding: 48px 24px 40px;
-      text-align: center;
+      padding: 48px 24px 40px; text-align: center;
     }
     .hero-badge {
       display: inline-flex; align-items: center; gap: 8px;
@@ -72,7 +156,6 @@
     /* MAIN */
     .main { max-width: 860px; margin: 0 auto; padding: 40px 24px 80px; }
 
-    /* SECTION LABEL */
     .section-label {
       font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em;
       text-transform: uppercase; color: var(--text-3);
@@ -80,40 +163,28 @@
     }
     .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-    /* DOWNLOAD CARDS GRID */
+    /* DOWNLOAD CARDS */
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 16px;
-      margin-bottom: 40px;
+      gap: 16px; margin-bottom: 40px;
     }
-
     .dcard {
-      background: var(--navy-2);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 24px;
+      background: var(--navy-2); border: 1px solid var(--border);
+      border-radius: 14px; padding: 24px;
       display: flex; flex-direction: column; gap: 14px;
       transition: border-color 0.2s, transform 0.2s;
     }
     .dcard:hover { border-color: rgba(255,255,255,0.16); transform: translateY(-2px); }
 
-    .dcard-icon {
-      width: 44px; height: 44px; border-radius: 11px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.3rem; flex-shrink: 0;
-    }
+    .dcard-icon { width: 44px; height: 44px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
     .dcard-icon--green { background: rgba(22,163,74,0.15); }
     .dcard-icon--gold  { background: rgba(245,158,11,0.12); }
     .dcard-icon--blue  { background: rgba(59,130,246,0.12); }
 
-    .dcard-tag {
-      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--text-3); margin-bottom: 4px;
-    }
+    .dcard-tag { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
     .dcard-title { font-size: 0.97rem; font-weight: 700; color: var(--text-1); line-height: 1.3; }
     .dcard-desc { font-size: 0.82rem; color: var(--text-2); line-height: 1.6; flex: 1; }
-
     .dcard-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
     .dcard-meta { font-size: 0.72rem; color: var(--text-3); }
 
@@ -122,44 +193,33 @@
       background: var(--green); color: #fff;
       font-size: 0.8rem; font-weight: 700;
       padding: 9px 18px; border-radius: 8px; text-decoration: none;
-      transition: background 0.2s, transform 0.15s;
-      white-space: nowrap;
+      transition: background 0.2s, transform 0.15s; white-space: nowrap;
     }
     .btn-download:hover { background: var(--green-dark); transform: translateY(-1px); }
     .btn-download svg { width: 14px; height: 14px; flex-shrink: 0; }
-
     .btn-download--soon {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      color: var(--text-3);
-      cursor: default;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text-3); cursor: default;
     }
     .btn-download--soon:hover { background: rgba(255,255,255,0.06); transform: none; }
 
-    /* BONUS SECTION */
+    /* BONUS */
     .bonus-section { margin-top: 12px; }
-
     .bonus-banner {
       background: linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(245,158,11,0.04) 100%);
-      border: 1px solid rgba(245,158,11,0.25);
-      border-radius: 14px;
-      padding: 20px 24px;
-      display: flex; align-items: center; gap: 16px;
-      margin-bottom: 16px;
+      border: 1px solid rgba(245,158,11,0.25); border-radius: 14px;
+      padding: 20px 24px; display: flex; align-items: center; gap: 16px; margin-bottom: 16px;
     }
     .bonus-banner-icon { font-size: 1.8rem; flex-shrink: 0; }
     .bonus-banner h3 { font-size: 1rem; font-weight: 800; color: var(--gold); margin-bottom: 4px; }
     .bonus-banner p { font-size: 0.82rem; color: rgba(255,255,255,0.55); line-height: 1.5; }
 
-    /* SUPPORT BOX */
+    /* SUPPORT */
     .support-box {
-      background: var(--navy-2);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 24px;
+      background: var(--navy-2); border: 1px solid var(--border);
+      border-radius: 14px; padding: 24px;
       display: flex; align-items: center; justify-content: space-between;
-      gap: 20px; flex-wrap: wrap;
-      margin-top: 40px;
+      gap: 20px; flex-wrap: wrap; margin-top: 40px;
     }
     .support-box p { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; }
     .support-box strong { color: var(--text-1); }
@@ -178,6 +238,7 @@
     .footer a:hover { color: var(--text-2); }
 
     @media (max-width: 600px) {
+      .login-card { padding: 28px 20px; }
       .hero { padding: 32px 16px 28px; }
       .main { padding: 28px 16px 60px; }
       .cards-grid { grid-template-columns: 1fr; }
@@ -188,208 +249,309 @@
 </head>
 <body>
 
-<!-- AUTH GATE -->
-<script>
-  (function () {
-    if (sessionStorage.getItem('gib_logged_in') !== 'true' && localStorage.getItem('gib_logged_in') !== 'true') {
-      window.location.href = 'login.html';
-    }
-  })();
-</script>
+<!-- ============================================================
+     LOGIN SCREEN
+============================================================ -->
+<div id="loginScreen">
+  <div class="login-wrap">
+    <div class="login-logo">
+      <div class="login-logo__text">Stock<em>Master</em></div>
+      <span class="login-logo__sub">Members Area — Your Downloads</span>
+    </div>
 
-<!-- HEADER -->
-<header class="header">
-  <a href="index.html" class="header-logo">Stock<em>Master</em></a>
-  <div class="header-right">
-    <div class="user-badge" id="userBadge"></div>
-    <button class="logout-btn" onclick="doLogout()">Logout</button>
+    <div class="login-card">
+      <h1>Welcome Back</h1>
+      <p>Enter your details to access your spreadsheets</p>
+
+      <div class="login-error" id="loginError"></div>
+
+      <form id="loginForm" novalidate>
+        <div class="form-field">
+          <label for="loginEmail">Email Address</label>
+          <input type="email" id="loginEmail" placeholder="your@email.com" autocomplete="email" />
+        </div>
+        <div class="form-field">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="Your password" autocomplete="current-password" />
+        </div>
+        <button type="submit" class="login-btn" id="loginBtn">
+          <div class="spinner" id="spinner"></div>
+          <span id="btnText">Access My Downloads →</span>
+        </button>
+      </form>
+    </div>
+
+    <div class="badge-row">
+      <div class="badge-item"><span>🔒</span> Secure Access</div>
+      <div class="badge-item"><span>📊</span> Spreadsheets Included</div>
+      <div class="badge-item"><span>💬</span> WhatsApp Support</div>
+    </div>
+
+    <div class="login-footer">
+      Issues accessing your account?<br />
+      Contact: <a href="mailto:macallister764@gmail.com">macallister764@gmail.com</a>
+    </div>
   </div>
-</header>
-
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-badge">✔ Purchase Confirmed</div>
-  <h1>Your <em>StockMaster</em> Downloads</h1>
-  <p>Everything you purchased is ready below. Click the download button on each product to save it to your device.</p>
 </div>
 
-<!-- MAIN -->
-<div class="main">
+<!-- ============================================================
+     APP CONTENT (shown after login)
+============================================================ -->
+<div id="appContent">
 
-  <!-- SPREADSHEETS -->
-  <div class="section-label">Your Spreadsheets</div>
-  <div class="cards-grid">
-
-    <div class="dcard">
-      <div class="dcard-icon dcard-icon--green">📦</div>
-      <div>
-        <div class="dcard-tag">Starter Pack</div>
-        <div class="dcard-title">Basic Inventory Control</div>
-      </div>
-      <div class="dcard-desc">Track all your products, quantities and buying prices. Know exactly what's in stock at all times.</div>
-      <div class="dcard-footer">
-        <span class="dcard-meta">PDF / Google Sheets</span>
-        <a href="#" class="btn-download">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download
-        </a>
-      </div>
+  <!-- HEADER -->
+  <header class="header">
+    <a href="index.html" class="header-logo">Stock<em>Master</em></a>
+    <div class="header-right">
+      <div class="user-badge" id="userBadge"></div>
+      <button class="logout-btn" onclick="doLogout()">Logout</button>
     </div>
+  </header>
 
-    <div class="dcard">
-      <div class="dcard-icon dcard-icon--green">🧾</div>
-      <div>
-        <div class="dcard-tag">Starter Pack</div>
-        <div class="dcard-title">Daily Sales & Profit Register</div>
-      </div>
-      <div class="dcard-desc">Record every sale and see your daily profit automatically calculated — no formulas needed.</div>
-      <div class="dcard-footer">
-        <span class="dcard-meta">PDF / Google Sheets</span>
-        <a href="#" class="btn-download">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download
-        </a>
-      </div>
-    </div>
-
-    <div class="dcard">
-      <div class="dcard-icon dcard-icon--gold">📊</div>
-      <div>
-        <div class="dcard-tag">Pro Pack</div>
-        <div class="dcard-title">Advanced Inventory & Stock Alerts</div>
-      </div>
-      <div class="dcard-desc">Categories, expiry dates, reorder levels and automatic low-stock alerts for your entire product range.</div>
-      <div class="dcard-footer">
-        <span class="dcard-meta">PDF / Google Sheets</span>
-        <a href="#" class="btn-download">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download
-        </a>
-      </div>
-    </div>
-
-    <div class="dcard">
-      <div class="dcard-icon dcard-icon--gold">💰</div>
-      <div>
-        <div class="dcard-tag">Pro Pack</div>
-        <div class="dcard-title">Cash Flow & Monthly Reports</div>
-      </div>
-      <div class="dcard-desc">Track all income and expenses and generate an automatic monthly profit report for your shop.</div>
-      <div class="dcard-footer">
-        <span class="dcard-meta">PDF / Google Sheets</span>
-        <a href="#" class="btn-download">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download
-        </a>
-      </div>
-    </div>
-
-    <div class="dcard">
-      <div class="dcard-icon dcard-icon--blue">🧾</div>
-      <div>
-        <div class="dcard-tag">Ultimate Pack</div>
-        <div class="dcard-title">Invoices, Receipts & Suppliers</div>
-      </div>
-      <div class="dcard-desc">Generate professional invoices in seconds. Track all supplier purchases and outstanding payments.</div>
-      <div class="dcard-footer">
-        <span class="dcard-meta">PDF / Google Sheets</span>
-        <a href="#" class="btn-download">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download
-        </a>
-      </div>
-    </div>
-
-    <div class="dcard">
-      <div class="dcard-icon dcard-icon--blue">📈</div>
-      <div>
-        <div class="dcard-tag">Ultimate Pack</div>
-        <div class="dcard-title">Dashboard & Business Analysis</div>
-      </div>
-      <div class="dcard-desc">One screen showing your whole shop — top products, stock health, monthly trend and alerts — all live.</div>
-      <div class="dcard-footer">
-        <span class="dcard-meta">PDF / Google Sheets</span>
-        <a href="#" class="btn-download">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download
-        </a>
-      </div>
-    </div>
-
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">✔ Purchase Confirmed</div>
+    <h1>Your <em>StockMaster</em> Downloads</h1>
+    <p>Everything you purchased is ready below. Click the download button on each product to save it to your device.</p>
   </div>
 
-  <!-- BONUS -->
-  <div class="bonus-section">
-    <div class="section-label">Bonus</div>
+  <!-- MAIN -->
+  <div class="main">
 
-    <div class="bonus-banner">
-      <div class="bonus-banner-icon">🎁</div>
-      <div>
-        <h3>Exclusive Bonuses Included</h3>
-        <p>Extra resources to help you get the most out of your spreadsheets — available below.</p>
-      </div>
-    </div>
-
+    <!-- SPREADSHEETS -->
+    <div class="section-label">Your Spreadsheets</div>
     <div class="cards-grid">
 
       <div class="dcard">
-        <div class="dcard-icon dcard-icon--gold">⭐</div>
+        <div class="dcard-icon dcard-icon--green">📦</div>
         <div>
-          <div class="dcard-tag">Bonus 1</div>
-          <div class="dcard-title">Coming Soon</div>
+          <div class="dcard-tag">Starter Pack</div>
+          <div class="dcard-title">Basic Inventory Control</div>
         </div>
-        <div class="dcard-desc">This bonus will be available shortly. Check back soon.</div>
+        <div class="dcard-desc">Track all your products, quantities and buying prices. Know exactly what's in stock at all times.</div>
         <div class="dcard-footer">
-          <span class="dcard-meta">PDF</span>
-          <span class="btn-download btn-download--soon">Coming Soon</span>
+          <span class="dcard-meta">PDF / Google Sheets</span>
+          <a href="#" class="btn-download">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download
+          </a>
         </div>
       </div>
 
       <div class="dcard">
-        <div class="dcard-icon dcard-icon--gold">⭐</div>
+        <div class="dcard-icon dcard-icon--green">🧾</div>
         <div>
-          <div class="dcard-tag">Bonus 2</div>
-          <div class="dcard-title">Coming Soon</div>
+          <div class="dcard-tag">Starter Pack</div>
+          <div class="dcard-title">Daily Sales & Profit Register</div>
         </div>
-        <div class="dcard-desc">This bonus will be available shortly. Check back soon.</div>
+        <div class="dcard-desc">Record every sale and see your daily profit automatically calculated — no formulas needed.</div>
         <div class="dcard-footer">
-          <span class="dcard-meta">PDF</span>
-          <span class="btn-download btn-download--soon">Coming Soon</span>
+          <span class="dcard-meta">PDF / Google Sheets</span>
+          <a href="#" class="btn-download">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download
+          </a>
+        </div>
+      </div>
+
+      <div class="dcard">
+        <div class="dcard-icon dcard-icon--gold">📊</div>
+        <div>
+          <div class="dcard-tag">Pro Pack</div>
+          <div class="dcard-title">Advanced Inventory & Stock Alerts</div>
+        </div>
+        <div class="dcard-desc">Categories, expiry dates, reorder levels and automatic low-stock alerts for your entire product range.</div>
+        <div class="dcard-footer">
+          <span class="dcard-meta">PDF / Google Sheets</span>
+          <a href="#" class="btn-download">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download
+          </a>
+        </div>
+      </div>
+
+      <div class="dcard">
+        <div class="dcard-icon dcard-icon--gold">💰</div>
+        <div>
+          <div class="dcard-tag">Pro Pack</div>
+          <div class="dcard-title">Cash Flow & Monthly Reports</div>
+        </div>
+        <div class="dcard-desc">Track all income and expenses and generate an automatic monthly profit report for your shop.</div>
+        <div class="dcard-footer">
+          <span class="dcard-meta">PDF / Google Sheets</span>
+          <a href="#" class="btn-download">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download
+          </a>
+        </div>
+      </div>
+
+      <div class="dcard">
+        <div class="dcard-icon dcard-icon--blue">🧾</div>
+        <div>
+          <div class="dcard-tag">Ultimate Pack</div>
+          <div class="dcard-title">Invoices, Receipts & Suppliers</div>
+        </div>
+        <div class="dcard-desc">Generate professional invoices in seconds. Track all supplier purchases and outstanding payments.</div>
+        <div class="dcard-footer">
+          <span class="dcard-meta">PDF / Google Sheets</span>
+          <a href="#" class="btn-download">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download
+          </a>
+        </div>
+      </div>
+
+      <div class="dcard">
+        <div class="dcard-icon dcard-icon--blue">📈</div>
+        <div>
+          <div class="dcard-tag">Ultimate Pack</div>
+          <div class="dcard-title">Dashboard & Business Analysis</div>
+        </div>
+        <div class="dcard-desc">One screen showing your whole shop — top products, stock health, monthly trend and alerts — all live.</div>
+        <div class="dcard-footer">
+          <span class="dcard-meta">PDF / Google Sheets</span>
+          <a href="#" class="btn-download">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download
+          </a>
         </div>
       </div>
 
     </div>
+
+    <!-- BONUS -->
+    <div class="bonus-section">
+      <div class="section-label">Bonus</div>
+
+      <div class="bonus-banner">
+        <div class="bonus-banner-icon">🎁</div>
+        <div>
+          <h3>Exclusive Bonuses Included</h3>
+          <p>Extra resources to help you get the most out of your spreadsheets — available below.</p>
+        </div>
+      </div>
+
+      <div class="cards-grid">
+
+        <div class="dcard">
+          <div class="dcard-icon dcard-icon--gold">⭐</div>
+          <div>
+            <div class="dcard-tag">Bonus 1</div>
+            <div class="dcard-title">Coming Soon</div>
+          </div>
+          <div class="dcard-desc">This bonus will be available shortly. Check back soon.</div>
+          <div class="dcard-footer">
+            <span class="dcard-meta">PDF</span>
+            <span class="btn-download btn-download--soon">Coming Soon</span>
+          </div>
+        </div>
+
+        <div class="dcard">
+          <div class="dcard-icon dcard-icon--gold">⭐</div>
+          <div>
+            <div class="dcard-tag">Bonus 2</div>
+            <div class="dcard-title">Coming Soon</div>
+          </div>
+          <div class="dcard-desc">This bonus will be available shortly. Check back soon.</div>
+          <div class="dcard-footer">
+            <span class="dcard-meta">PDF</span>
+            <span class="btn-download btn-download--soon">Coming Soon</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SUPPORT -->
+    <div class="support-box">
+      <p><strong>Need help?</strong><br>If you have any issues accessing or using your spreadsheets, contact us and we'll help you within 1–2 business days.</p>
+      <a href="mailto:macallister764@gmail.com" class="btn-support">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        macallister764@gmail.com
+      </a>
+    </div>
+
   </div>
 
-  <!-- SUPPORT -->
-  <div class="support-box">
-    <p><strong>Need help?</strong><br>If you have any issues accessing or using your spreadsheets, contact us and we'll help you within 1–2 business days.</p>
-    <a href="mailto:macallister764@gmail.com" class="btn-support">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-      macallister764@gmail.com
-    </a>
+  <!-- FOOTER -->
+  <div class="footer">
+    &copy; 2024 Stock<em style="color:var(--gold);font-style:normal;">Master</em> &nbsp;·&nbsp;
+    <a href="support.html">Support</a>
+    <a href="refund-policy.html">Refund Policy</a>
+    <a href="privacy-policy.html">Privacy Policy</a>
+    <a href="terms-of-use.html">Terms of Use</a>
   </div>
 
-</div>
-
-<!-- FOOTER -->
-<div class="footer">
-  &copy; 2024 Stock<em style="color:var(--gold);font-style:normal;">Master</em> &nbsp;·&nbsp;
-  <a href="support.html">Support</a>
-  <a href="refund-policy.html">Refund Policy</a>
-  <a href="privacy-policy.html">Privacy Policy</a>
-  <a href="terms-of-use.html">Terms of Use</a>
-</div>
+</div><!-- /#appContent -->
 
 <script>
-  const email = sessionStorage.getItem('gib_user_email') || localStorage.getItem('gib_user_email') || '';
-  if (email) document.getElementById('userBadge').textContent = email;
+  function isLoggedIn() {
+    return sessionStorage.getItem('gib_logged_in') === 'true' || localStorage.getItem('gib_logged_in') === 'true';
+  }
+
+  function showApp() {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('appContent').style.display = 'block';
+    const email = sessionStorage.getItem('gib_user_email') || localStorage.getItem('gib_user_email') || '';
+    if (email) document.getElementById('userBadge').textContent = email;
+  }
+
+  // Check on load
+  if (isLoggedIn()) showApp();
+
+  // Login form
+  const form = document.getElementById('loginForm');
+  const errorEl = document.getElementById('loginError');
+  const btn = document.getElementById('loginBtn');
+  const spinner = document.getElementById('spinner');
+  const btnText = document.getElementById('btnText');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    errorEl.style.display = 'none';
+
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    if (!email) { showError('Please enter your email address.'); return; }
+    if (!email.includes('@')) { showError('Please enter a valid email address.'); return; }
+    if (!password) { showError('Please enter your password.'); return; }
+
+    btn.disabled = true;
+    spinner.style.display = 'block';
+    btnText.textContent = 'Verifying access...';
+
+    setTimeout(function () {
+      localStorage.setItem('gib_logged_in', 'true');
+      localStorage.setItem('gib_user_email', email);
+      sessionStorage.setItem('gib_logged_in', 'true');
+      sessionStorage.setItem('gib_user_email', email);
+      btnText.textContent = 'Access granted!';
+      setTimeout(showApp, 400);
+    }, 1100);
+  });
+
+  document.getElementById('loginEmail').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') document.getElementById('loginPassword').focus();
+  });
+
+  function showError(msg) {
+    errorEl.textContent = msg;
+    errorEl.style.display = 'block';
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    btnText.textContent = 'Access My Downloads →';
+  }
 
   function doLogout() {
     sessionStorage.clear();
     localStorage.removeItem('gib_logged_in');
     localStorage.removeItem('gib_user_email');
-    window.location.href = 'login.html';
+    document.getElementById('appContent').style.display = 'none';
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('loginEmail').value = '';
+    document.getElementById('loginPassword').value = '';
   }
 </script>
 
