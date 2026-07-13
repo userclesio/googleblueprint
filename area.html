@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Downloads — StockMaster</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100%; }
+    body { font-family: 'Inter', sans-serif; background: #07111F; color: #F9FAFB; }
+
+    :root {
+      --navy: #07111F;
+      --navy-2: #0F1A2E;
+      --navy-3: #1A2840;
+      --border: rgba(255,255,255,0.08);
+      --green: #16A34A;
+      --green-dark: #15803D;
+      --gold: #F59E0B;
+      --text-1: #F9FAFB;
+      --text-2: #9CA3AF;
+      --text-3: #6B7280;
+    }
+
+    /* HEADER */
+    .header {
+      background: #070E1C;
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 62px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .header-logo { font-size: 1.1rem; font-weight: 800; color: #fff; text-decoration: none; }
+    .header-logo em { color: var(--gold); font-style: normal; }
+    .header-right { display: flex; align-items: center; gap: 14px; }
+    .user-badge {
+      font-size: 0.78rem; color: var(--text-2);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); border-radius: 100px;
+      padding: 5px 14px; max-width: 200px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .logout-btn {
+      background: none; border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text-2); padding: 6px 14px;
+      border-radius: 6px; font-size: 0.8rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s; font-family: inherit;
+    }
+    .logout-btn:hover { border-color: rgba(255,255,255,0.3); color: var(--text-1); }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #0A1628 0%, #111D2E 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 24px 40px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(22,163,74,0.12); border: 1px solid rgba(22,163,74,0.3);
+      color: #4ADE80; font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 6px 16px; border-radius: 100px; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 900; margin-bottom: 12px; letter-spacing: -0.02em; }
+    .hero h1 em { color: var(--gold); font-style: normal; }
+    .hero p { color: var(--text-2); font-size: 0.95rem; max-width: 480px; margin: 0 auto; line-height: 1.7; }
+
+    /* MAIN */
+    .main { max-width: 860px; margin: 0 auto; padding: 40px 24px 80px; }
+
+    /* SECTION LABEL */
+    .section-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--text-3);
+      margin-bottom: 18px; display: flex; align-items: center; gap: 10px;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* DOWNLOAD CARDS GRID */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .dcard {
+      background: var(--navy-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex; flex-direction: column; gap: 14px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .dcard:hover { border-color: rgba(255,255,255,0.16); transform: translateY(-2px); }
+
+    .dcard-icon {
+      width: 44px; height: 44px; border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; flex-shrink: 0;
+    }
+    .dcard-icon--green { background: rgba(22,163,74,0.15); }
+    .dcard-icon--gold  { background: rgba(245,158,11,0.12); }
+    .dcard-icon--blue  { background: rgba(59,130,246,0.12); }
+
+    .dcard-tag {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-3); margin-bottom: 4px;
+    }
+    .dcard-title { font-size: 0.97rem; font-weight: 700; color: var(--text-1); line-height: 1.3; }
+    .dcard-desc { font-size: 0.82rem; color: var(--text-2); line-height: 1.6; flex: 1; }
+
+    .dcard-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .dcard-meta { font-size: 0.72rem; color: var(--text-3); }
+
+    .btn-download {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--green); color: #fff;
+      font-size: 0.8rem; font-weight: 700;
+      padding: 9px 18px; border-radius: 8px; text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
+    .btn-download:hover { background: var(--green-dark); transform: translateY(-1px); }
+    .btn-download svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    .btn-download--soon {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text-3);
+      cursor: default;
+    }
+    .btn-download--soon:hover { background: rgba(255,255,255,0.06); transform: none; }
+
+    /* BONUS SECTION */
+    .bonus-section { margin-top: 12px; }
+
+    .bonus-banner {
+      background: linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(245,158,11,0.04) 100%);
+      border: 1px solid rgba(245,158,11,0.25);
+      border-radius: 14px;
+      padding: 20px 24px;
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 16px;
+    }
+    .bonus-banner-icon { font-size: 1.8rem; flex-shrink: 0; }
+    .bonus-banner h3 { font-size: 1rem; font-weight: 800; color: var(--gold); margin-bottom: 4px; }
+    .bonus-banner p { font-size: 0.82rem; color: rgba(255,255,255,0.55); line-height: 1.5; }
+
+    /* SUPPORT BOX */
+    .support-box {
+      background: var(--navy-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 20px; flex-wrap: wrap;
+      margin-top: 40px;
+    }
+    .support-box p { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; }
+    .support-box strong { color: var(--text-1); }
+    .btn-support {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text-1); font-size: 0.82rem; font-weight: 600;
+      padding: 10px 20px; border-radius: 8px; text-decoration: none;
+      transition: background 0.2s; white-space: nowrap;
+    }
+    .btn-support:hover { background: rgba(255,255,255,0.1); }
+
+    /* FOOTER */
+    .footer { border-top: 1px solid var(--border); padding: 24px; text-align: center; font-size: 0.75rem; color: var(--text-3); }
+    .footer a { color: var(--text-3); text-decoration: none; margin: 0 8px; }
+    .footer a:hover { color: var(--text-2); }
+
+    @media (max-width: 600px) {
+      .hero { padding: 32px 16px 28px; }
+      .main { padding: 28px 16px 60px; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .user-badge { display: none; }
+      .bonus-banner { flex-direction: column; align-items: flex-start; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- AUTH GATE -->
+<script>
+  (function () {
+    if (sessionStorage.getItem('gib_logged_in') !== 'true' && localStorage.getItem('gib_logged_in') !== 'true') {
+      window.location.href = 'login.html';
+    }
+  })();
+</script>
+
+<!-- HEADER -->
+<header class="header">
+  <a href="index.html" class="header-logo">Stock<em>Master</em></a>
+  <div class="header-right">
+    <div class="user-badge" id="userBadge"></div>
+    <button class="logout-btn" onclick="doLogout()">Logout</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">✔ Purchase Confirmed</div>
+  <h1>Your <em>StockMaster</em> Downloads</h1>
+  <p>Everything you purchased is ready below. Click the download button on each product to save it to your device.</p>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- SPREADSHEETS -->
+  <div class="section-label">Your Spreadsheets</div>
+  <div class="cards-grid">
+
+    <div class="dcard">
+      <div class="dcard-icon dcard-icon--green">📦</div>
+      <div>
+        <div class="dcard-tag">Starter Pack</div>
+        <div class="dcard-title">Basic Inventory Control</div>
+      </div>
+      <div class="dcard-desc">Track all your products, quantities and buying prices. Know exactly what's in stock at all times.</div>
+      <div class="dcard-footer">
+        <span class="dcard-meta">PDF / Google Sheets</span>
+        <a href="#" class="btn-download">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-icon dcard-icon--green">🧾</div>
+      <div>
+        <div class="dcard-tag">Starter Pack</div>
+        <div class="dcard-title">Daily Sales & Profit Register</div>
+      </div>
+      <div class="dcard-desc">Record every sale and see your daily profit automatically calculated — no formulas needed.</div>
+      <div class="dcard-footer">
+        <span class="dcard-meta">PDF / Google Sheets</span>
+        <a href="#" class="btn-download">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-icon dcard-icon--gold">📊</div>
+      <div>
+        <div class="dcard-tag">Pro Pack</div>
+        <div class="dcard-title">Advanced Inventory & Stock Alerts</div>
+      </div>
+      <div class="dcard-desc">Categories, expiry dates, reorder levels and automatic low-stock alerts for your entire product range.</div>
+      <div class="dcard-footer">
+        <span class="dcard-meta">PDF / Google Sheets</span>
+        <a href="#" class="btn-download">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-icon dcard-icon--gold">💰</div>
+      <div>
+        <div class="dcard-tag">Pro Pack</div>
+        <div class="dcard-title">Cash Flow & Monthly Reports</div>
+      </div>
+      <div class="dcard-desc">Track all income and expenses and generate an automatic monthly profit report for your shop.</div>
+      <div class="dcard-footer">
+        <span class="dcard-meta">PDF / Google Sheets</span>
+        <a href="#" class="btn-download">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-icon dcard-icon--blue">🧾</div>
+      <div>
+        <div class="dcard-tag">Ultimate Pack</div>
+        <div class="dcard-title">Invoices, Receipts & Suppliers</div>
+      </div>
+      <div class="dcard-desc">Generate professional invoices in seconds. Track all supplier purchases and outstanding payments.</div>
+      <div class="dcard-footer">
+        <span class="dcard-meta">PDF / Google Sheets</span>
+        <a href="#" class="btn-download">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+    <div class="dcard">
+      <div class="dcard-icon dcard-icon--blue">📈</div>
+      <div>
+        <div class="dcard-tag">Ultimate Pack</div>
+        <div class="dcard-title">Dashboard & Business Analysis</div>
+      </div>
+      <div class="dcard-desc">One screen showing your whole shop — top products, stock health, monthly trend and alerts — all live.</div>
+      <div class="dcard-footer">
+        <span class="dcard-meta">PDF / Google Sheets</span>
+        <a href="#" class="btn-download">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BONUS -->
+  <div class="bonus-section">
+    <div class="section-label">Bonus</div>
+
+    <div class="bonus-banner">
+      <div class="bonus-banner-icon">🎁</div>
+      <div>
+        <h3>Exclusive Bonuses Included</h3>
+        <p>Extra resources to help you get the most out of your spreadsheets — available below.</p>
+      </div>
+    </div>
+
+    <div class="cards-grid">
+
+      <div class="dcard">
+        <div class="dcard-icon dcard-icon--gold">⭐</div>
+        <div>
+          <div class="dcard-tag">Bonus 1</div>
+          <div class="dcard-title">Coming Soon</div>
+        </div>
+        <div class="dcard-desc">This bonus will be available shortly. Check back soon.</div>
+        <div class="dcard-footer">
+          <span class="dcard-meta">PDF</span>
+          <span class="btn-download btn-download--soon">Coming Soon</span>
+        </div>
+      </div>
+
+      <div class="dcard">
+        <div class="dcard-icon dcard-icon--gold">⭐</div>
+        <div>
+          <div class="dcard-tag">Bonus 2</div>
+          <div class="dcard-title">Coming Soon</div>
+        </div>
+        <div class="dcard-desc">This bonus will be available shortly. Check back soon.</div>
+        <div class="dcard-footer">
+          <span class="dcard-meta">PDF</span>
+          <span class="btn-download btn-download--soon">Coming Soon</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SUPPORT -->
+  <div class="support-box">
+    <p><strong>Need help?</strong><br>If you have any issues accessing or using your spreadsheets, contact us and we'll help you within 1–2 business days.</p>
+    <a href="mailto:macallister764@gmail.com" class="btn-support">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      macallister764@gmail.com
+    </a>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  &copy; 2024 Stock<em style="color:var(--gold);font-style:normal;">Master</em> &nbsp;·&nbsp;
+  <a href="support.html">Support</a>
+  <a href="refund-policy.html">Refund Policy</a>
+  <a href="privacy-policy.html">Privacy Policy</a>
+  <a href="terms-of-use.html">Terms of Use</a>
+</div>
+
+<script>
+  const email = sessionStorage.getItem('gib_user_email') || localStorage.getItem('gib_user_email') || '';
+  if (email) document.getElementById('userBadge').textContent = email;
+
+  function doLogout() {
+    sessionStorage.clear();
+    localStorage.removeItem('gib_logged_in');
+    localStorage.removeItem('gib_user_email');
+    window.location.href = 'login.html';
+  }
+</script>
+
+</body>
+</html>
