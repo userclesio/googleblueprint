@@ -187,7 +187,7 @@
 
 <script>
   if (sessionStorage.getItem('gib_logged_in') === 'true' || localStorage.getItem('gib_logged_in') === 'true') {
-    window.location.href = 'area.html';
+    window.location.href = 'members.html';
   }
 
   const form = document.getElementById('loginForm');
@@ -218,7 +218,7 @@
       sessionStorage.setItem('gib_user_email', email);
       btnText.textContent = 'Access granted! Loading...';
       setTimeout(function () {
-        window.location.href = 'area.html';
+        window.location.href = 'members.html';
       }, 400);
     }, 1100);
   });
