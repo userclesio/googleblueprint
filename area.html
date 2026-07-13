@@ -203,6 +203,52 @@
     }
     .btn-download--soon:hover { background: rgba(255,255,255,0.06); transform: none; }
 
+    /* PACK CARDS */
+    .pack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 18px; margin-bottom: 40px;
+    }
+    .pack-card {
+      background: var(--navy-2); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .pack-card:hover { border-color: rgba(255,255,255,0.16); transform: translateY(-2px); }
+
+    .pack-header {
+      padding: 18px 20px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .pack-header--green { background: rgba(22,163,74,0.12); border-bottom: 1px solid rgba(22,163,74,0.2); }
+    .pack-header--gold  { background: rgba(245,158,11,0.1);  border-bottom: 1px solid rgba(245,158,11,0.2); }
+    .pack-header--blue  { background: rgba(59,130,246,0.1);  border-bottom: 1px solid rgba(59,130,246,0.15); }
+
+    .pack-badge {
+      font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-1);
+    }
+    .pack-icon { font-size: 1.4rem; }
+
+    .pack-body { padding: 20px; display: flex; flex-direction: column; flex: 1; gap: 16px; }
+
+    .pack-list { list-style: none; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+    .pack-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; color: var(--text-2); line-height: 1.5; }
+    .pack-list li strong { color: var(--text-1); }
+    .li-icon { color: #4ADE80; font-size: 0.85rem; flex-shrink: 0; margin-top: 1px; }
+
+    .btn-pack {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 18px; border-radius: 8px;
+      font-size: 0.85rem; font-weight: 700; text-decoration: none;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .btn-pack:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-pack svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .btn-pack--green { background: rgba(22,163,74,0.18);  color: #4ADE80;  border: 1px solid rgba(22,163,74,0.35); }
+    .btn-pack--gold  { background: rgba(245,158,11,0.14); color: #FCD34D;  border: 1px solid rgba(245,158,11,0.3); }
+    .btn-pack--blue  { background: rgba(59,130,246,0.14); color: #93C5FD;  border: 1px solid rgba(59,130,246,0.3); }
+
     /* BONUS */
     .bonus-section { margin-top: 12px; }
     .bonus-banner {
@@ -320,100 +366,61 @@
 
     <!-- SPREADSHEETS -->
     <div class="section-label">Your Spreadsheets</div>
-    <div class="cards-grid">
+    <div class="pack-grid">
 
-      <div class="dcard">
-        <div class="dcard-icon dcard-icon--green">📦</div>
-        <div>
-          <div class="dcard-tag">Starter Pack</div>
-          <div class="dcard-title">Basic Inventory Control</div>
+      <!-- STARTER -->
+      <div class="pack-card">
+        <div class="pack-header pack-header--green">
+          <div class="pack-badge">Starter Pack</div>
+          <div class="pack-icon">📦</div>
         </div>
-        <div class="dcard-desc">Track all your products, quantities and buying prices. Know exactly what's in stock at all times.</div>
-        <div class="dcard-footer">
-          <span class="dcard-meta">Google Sheets</span>
-          <a href="https://docs.google.com/spreadsheets/d/1OTDaQL1EZzhwczPXmaTZXp9tGBzwczyn/edit?usp=sharing&ouid=107548192143652818787&rtpof=true&sd=true" target="_blank" class="btn-download">
+        <div class="pack-body">
+          <ul class="pack-list">
+            <li><span class="li-icon">✔</span><span><strong>Basic Inventory Control</strong> — track all products, quantities and buying prices in one sheet</span></li>
+            <li><span class="li-icon">✔</span><span><strong>Daily Sales Register</strong> — record every sale and see daily profit calculated automatically</span></li>
+            <li><span class="li-icon">✔</span><span><strong>Low-Stock Alerts</strong> — get highlighted warnings when a product needs restocking</span></li>
+          </ul>
+          <a href="https://docs.google.com/spreadsheets/d/1OTDaQL1EZzhwczPXmaTZXp9tGBzwczyn/edit?usp=sharing&ouid=107548192143652818787&rtpof=true&sd=true" target="_blank" class="btn-pack btn-pack--green">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Open Sheet
+            Open Starter Spreadsheet
           </a>
         </div>
       </div>
 
-      <div class="dcard">
-        <div class="dcard-icon dcard-icon--green">🧾</div>
-        <div>
-          <div class="dcard-tag">Starter Pack</div>
-          <div class="dcard-title">Daily Sales & Profit Register</div>
+      <!-- PRO -->
+      <div class="pack-card">
+        <div class="pack-header pack-header--gold">
+          <div class="pack-badge">Pro Pack</div>
+          <div class="pack-icon">📊</div>
         </div>
-        <div class="dcard-desc">Record every sale and see your daily profit automatically calculated — no formulas needed.</div>
-        <div class="dcard-footer">
-          <span class="dcard-meta">Google Sheets</span>
-          <a href="https://docs.google.com/spreadsheets/d/1OTDaQL1EZzhwczPXmaTZXp9tGBzwczyn/edit?usp=sharing&ouid=107548192143652818787&rtpof=true&sd=true" target="_blank" class="btn-download">
+        <div class="pack-body">
+          <ul class="pack-list">
+            <li><span class="li-icon">✔</span><span><strong>Advanced Inventory</strong> — categories, expiry dates and reorder levels for your full product range</span></li>
+            <li><span class="li-icon">✔</span><span><strong>Cash Flow Tracker</strong> — record all money in and out, with running balance always visible</span></li>
+            <li><span class="li-icon">✔</span><span><strong>Monthly Profit Report</strong> — automatic summary of revenue, cost and profit every month</span></li>
+          </ul>
+          <a href="https://docs.google.com/spreadsheets/d/1JvNgarEeMm8M3wObM4b1B6TqI1_m-yWx/edit?usp=sharing&ouid=107548192143652818787&rtpof=true&sd=true" target="_blank" class="btn-pack btn-pack--gold">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Open Sheet
+            Open Pro Spreadsheet
           </a>
         </div>
       </div>
 
-      <div class="dcard">
-        <div class="dcard-icon dcard-icon--gold">📊</div>
-        <div>
-          <div class="dcard-tag">Pro Pack</div>
-          <div class="dcard-title">Advanced Inventory & Stock Alerts</div>
+      <!-- ULTIMATE -->
+      <div class="pack-card">
+        <div class="pack-header pack-header--blue">
+          <div class="pack-badge">Ultimate Pack</div>
+          <div class="pack-icon">🏆</div>
         </div>
-        <div class="dcard-desc">Categories, expiry dates, reorder levels and automatic low-stock alerts for your entire product range.</div>
-        <div class="dcard-footer">
-          <span class="dcard-meta">Google Sheets</span>
-          <a href="https://docs.google.com/spreadsheets/d/1JvNgarEeMm8M3wObM4b1B6TqI1_m-yWx/edit?usp=sharing&ouid=107548192143652818787&rtpof=true&sd=true" target="_blank" class="btn-download">
+        <div class="pack-body">
+          <ul class="pack-list">
+            <li><span class="li-icon">✔</span><span><strong>Invoice & Receipt Generator</strong> — create professional receipts in seconds, ready to send or print</span></li>
+            <li><span class="li-icon">✔</span><span><strong>Supplier Management</strong> — track all suppliers, purchases, payments and outstanding debts</span></li>
+            <li><span class="li-icon">✔</span><span><strong>Business Dashboard</strong> — one screen with top products, stock health, monthly trend and alerts live</span></li>
+          </ul>
+          <a href="https://docs.google.com/spreadsheets/d/1vm9WU-Itv4uiHYj-tzxyvYhSG9fG0SNW/edit?usp=sharing&ouid=107548192143652818787&rtpof=true&sd=true" target="_blank" class="btn-pack btn-pack--blue">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Open Sheet
-          </a>
-        </div>
-      </div>
-
-      <div class="dcard">
-        <div class="dcard-icon dcard-icon--gold">💰</div>
-        <div>
-          <div class="dcard-tag">Pro Pack</div>
-          <div class="dcard-title">Cash Flow & Monthly Reports</div>
-        </div>
-        <div class="dcard-desc">Track all income and expenses and generate an automatic monthly profit report for your shop.</div>
-        <div class="dcard-footer">
-          <span class="dcard-meta">Google Sheets</span>
-          <a href="https://docs.google.com/spreadsheets/d/1JvNgarEeMm8M3wObM4b1B6TqI1_m-yWx/edit?usp=sharing&ouid=107548192143652818787&rtpof=true&sd=true" target="_blank" class="btn-download">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Open Sheet
-          </a>
-        </div>
-      </div>
-
-      <div class="dcard">
-        <div class="dcard-icon dcard-icon--blue">🧾</div>
-        <div>
-          <div class="dcard-tag">Ultimate Pack</div>
-          <div class="dcard-title">Invoices, Receipts & Suppliers</div>
-        </div>
-        <div class="dcard-desc">Generate professional invoices in seconds. Track all supplier purchases and outstanding payments.</div>
-        <div class="dcard-footer">
-          <span class="dcard-meta">Google Sheets</span>
-          <a href="https://docs.google.com/spreadsheets/d/1vm9WU-Itv4uiHYj-tzxyvYhSG9fG0SNW/edit?usp=sharing&ouid=107548192143652818787&rtpof=true&sd=true" target="_blank" class="btn-download">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Open Sheet
-          </a>
-        </div>
-      </div>
-
-      <div class="dcard">
-        <div class="dcard-icon dcard-icon--blue">📈</div>
-        <div>
-          <div class="dcard-tag">Ultimate Pack</div>
-          <div class="dcard-title">Dashboard & Business Analysis</div>
-        </div>
-        <div class="dcard-desc">One screen showing your whole shop — top products, stock health, monthly trend and alerts — all live.</div>
-        <div class="dcard-footer">
-          <span class="dcard-meta">Google Sheets</span>
-          <a href="https://docs.google.com/spreadsheets/d/1vm9WU-Itv4uiHYj-tzxyvYhSG9fG0SNW/edit?usp=sharing&ouid=107548192143652818787&rtpof=true&sd=true" target="_blank" class="btn-download">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Open Sheet
+            Open Ultimate Spreadsheet
           </a>
         </div>
       </div>
@@ -443,7 +450,10 @@
           <div class="dcard-desc">10 proven ways to increase your shop's profits — without selling more. Practical strategies for Kenyan shop owners.</div>
           <div class="dcard-footer">
             <span class="dcard-meta">PDF · 14 pages</span>
-            <span class="btn-download btn-download--soon">Coming Soon</span>
+            <a href="files/Bonus1_Profit_Boost_Ebook.pdf" target="_blank" class="btn-download">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download PDF
+            </a>
           </div>
         </div>
 
@@ -456,7 +466,10 @@
           <div class="dcard-desc">Turn WhatsApp into your shop's best salesperson. Templates, setup guide and 7-day launch plan included.</div>
           <div class="dcard-footer">
             <span class="dcard-meta">PDF · 8 pages</span>
-            <span class="btn-download btn-download--soon">Coming Soon</span>
+            <a href="files/Bonus2_WhatsApp_Selling_Secrets.pdf" target="_blank" class="btn-download">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download PDF
+            </a>
           </div>
         </div>
 
@@ -469,7 +482,10 @@
           <div class="dcard-desc">The shop owner's daily, weekly and monthly routine — print it and pin it in your shop. Builds habits that grow your business.</div>
           <div class="dcard-footer">
             <span class="dcard-meta">PDF · 4 pages</span>
-            <span class="btn-download btn-download--soon">Coming Soon</span>
+            <a href="files/Bonus3_Daily_Success_Checklist.pdf" target="_blank" class="btn-download">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download PDF
+            </a>
           </div>
         </div>
 
